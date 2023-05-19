@@ -1,0 +1,49 @@
+.insta{
+    padding: 64px 0 154px;
+    background: #FFF7ED;
+}
+.insta-text{
+    font-weight: 500;
+    font-size: 24px;
+    line-height: 32px;
+    text-transform: uppercase;
+    color: #470D04;
+    margin-bottom: 48px;
+}
+.insta-slide img{
+    border-radius: 15px;
+    width: 100%;
+}
+@media (max-width: 1500px) {
+    .insta-slide img{
+        width: 94%;
+    }
+}
+@media (max-width: 1366px) {
+    .insta-text{
+        font-size: 22px;
+    }
+}
+@media (max-width: 1000px) {
+    .insta-text{
+        width: 90%;
+    }
+}
+@media (max-width: 480px) {
+    .insta{
+        padding: 64px 0;
+    }
+    .insta-text{
+        font-size: 16px;
+        margin-bottom: 32px;
+    }
+}
+@media (max-width: 360px) {
+    .insta{
+        padding: 64px 0 64px 15px;
+    }
+    .insta-text {
+        width: 100%;
+        line-height: 30px;
+    }
+}

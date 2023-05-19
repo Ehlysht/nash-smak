@@ -1,0 +1,18 @@
+@import "./style/base.css";
+/* Components */
+@import "./style/header.css";
+@import "./style/carusel.css";
+@import "./style/catalog.css";
+@import "./style/most.css";
+@import "./style/ads.css";
+@import "./style/insta.css";
+/* Home page */
+@import "./style/about.css";
+@import "./style/subscribe.css";
+@import "./style/target.css";
+/* Pages */
+@import "./style/goods.css";
+@import "./style/item.css";
+@import "./style/cabinet.css";
+@import "./style/cart.css";
+@import "./style/footer.css";
