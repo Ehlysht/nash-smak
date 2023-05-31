@@ -14,6 +14,14 @@ const routes = [
       },
     },
     {
+      path: "/Contacts",
+      name: "Contacts",
+      component: () => import(/* webpackChunkName: "Goods" */ '../views/Contacts.vue'),
+      meta: {
+        title: 'Контакти',
+      },
+    },
+    {
       path: "/Login",
       name: "Login",
       component: () => import(/* webpackChunkName: "Goods" */ '../views/Login.vue'),
@@ -27,6 +35,14 @@ const routes = [
       component: () => import(/* webpackChunkName: "Goods" */ '../views/Cart.vue'),
       meta: {
         title: 'Корзина',
+      },
+    },
+    {
+      path: "/Catalog/:catalogName",
+      name: "Catalog",
+      component: () => import(/* webpackChunkName: "Goods" */ '../views/Catalog.vue'),
+      meta: {
+        title: 'Каталог',
       },
     },
     {
@@ -59,14 +75,6 @@ const routes = [
       name: "Cabinet",
       component: () => import(/* webpackChunkName: "Goods" */ '../views/Cabinet.vue'),
     },
-    // {
-    //   path: "/Catalog/:catalog/:name",
-    //   name: "Catalog",
-    //   component: () => import(/* webpackChunkName: "Catalog" */ '../views/Goods.vue'),
-    //   meta: {
-    //     reload: true,
-    //   },
-    // },
     {
       path: "/Goods/:name/:bar",
       name: "Item",
@@ -109,6 +117,7 @@ const router = createRouter({
 });
 router.beforeEach((to, from, next) => {
   to.meta.title = to.params.category;
+  to.meta.title2 = to.params.catalogName;
   next();
 });
 // router.beforeEach((to, from) => {

@@ -1,5 +1,8 @@
 <template>
     <div class="cart-goods">
+        <h3 class="cart-title" v-if="this.screenWidth <= 680">
+            Будь ласка, заповніть контактну форму
+        </h3>
         <div v-if="this.userCart">
             <div class="cart-goods_free">
                 <p class="cart-goods_text">
@@ -49,7 +52,7 @@
                     Тут могла б бути ваша реклама!
                 </p>
             </div>
-            <div>
+            <div v-if="this.screenWidth > 680">
                 <div class="cart-goods_sum">
                     <p>
                         Вартість доставки
@@ -80,7 +83,10 @@
                 <p class="cart-goods_alert" v-if="this.sumValue < 200">
                     <img src="@/assets/img/alert-cart.png" alt="Alert"> Мінімальна сума замовлення 200 грн
                 </p>
-                <button class="cart-goods_btn cart-goods_btn_active" v-if="this.sumValue >= 200">
+                <button @click.prevent="payment()" class="cart-goods_btn cart-goods_btn_active" v-if="this.sumValue >= 200 && this.routeName">
+                    <a href="#">Оформити замовлення</a>
+                </button>
+                <button class="cart-goods_btn cart-goods_btn_active" v-if="this.sumValue >= 200 && !this.routeName">
                     <router-link to="/Cart">Оформити замовлення</router-link>
                 </button>
                 <button class="cart-goods_btn cart-goods_btn_disable" v-if="this.sumValue < 200">
@@ -106,11 +112,11 @@
 <script>
 import axios from 'axios'
 export default {
+    props:['routeName'],
     data(){
         return{
-            depCheck: '',
-            payCheck: '',
             userCart: [],
+            payCheck: 'card',
             sumValue: '',
             sumPercent: '',
             agree: true,
@@ -168,7 +174,17 @@ export default {
         },
         closeCart(){
             this.$store.dispatch('setCartVisible', false);
-        }
+        },  
+        payment(){
+            if(this.payCheck == 'card'){
+                var privatKey = 'sandbox_xQs3173QoGmt3fD3olfWAjUQrgsmCh7Zgmdb9LpX'
+                var json_string = '{"public_key":"sandbox_i23769093976","version":"3","action":"pay","amount":"' + this.sumValue + '","currency":"UAH","description":"Buy items","order_id":"000001"}'
+                this.valData = btoa(json_string)
+                window.location.href = 'https://www.liqpay.ua/api/3/checkout?data=' + this.valData + '&signature=' + CryptoJS.SHA1(privatKey + this.valData + privatKey).toString(CryptoJS.enc.Base64)
+            }else{
+                alert("Буде приходити повідомлення на пошту про закупівлю")
+            }
+        },
     },
     computed:{
         sumAll(){
@@ -179,6 +195,7 @@ export default {
                     sum = sum + (this.userCart[i].price * this.userCart[i].userQty)
                     this.sumValue = this.sumValue + (this.userCart[i].price * this.userCart[i].userQty)
                 }
+                this.$store.dispatch('setSum', this.sumValue);
                 this.sumPercent = sum
                 if(2000 - sum > 0){
                     return 2000 - sum

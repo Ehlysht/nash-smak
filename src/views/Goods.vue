@@ -12,7 +12,7 @@
                 </p>
             </div>
             <button class="btn goods-btn">
-                <router-link to="/">
+                <router-link to="/Catalog/Каталог">
                     Переглянути весь каталог <img src="@/assets/img/arrow-right.svg" alt="Arrow">
                 </router-link>
             </button>
@@ -35,23 +35,23 @@
                     </p>
                     <div class="filters-list">
                         <label class="container-check filters-item" for="weight1">
-                            <input type="checkbox" id="weight1" value="weight1" v-model="this.weightChecked"><p>від 1 г до 150г</p>
+                            <input type="checkbox" id="weight1" value="weight1" v-model="this.filtersList"><p>від 1 г до 150г</p>
                             <span class="checkmark"></span>
                         </label>
                         <label class="container-check filters-item" for="weight2">
-                            <input type="checkbox" id="weight2" value="weight2" v-model="this.weightChecked"><p>від 150 г до 300 г</p>
+                            <input type="checkbox" id="weight2" value="weight2" v-model="this.filtersList"><p>від 150 г до 300 г</p>
                             <span class="checkmark"></span>
                         </label>
                         <label class="container-check filters-item" for="weight3">
-                            <input type="checkbox" id="weight3" value="weight3" v-model="this.weightChecked"><p>від 300 г до 500 г</p>
+                            <input type="checkbox" id="weight3" value="weight3" v-model="this.filtersList"><p>від 300 г до 500 г</p>
                             <span class="checkmark"></span>
                         </label>
                         <label class="container-check filters-item" for="weight4">
-                            <input type="checkbox" id="weight4" value="weight4" v-model="this.weightChecked"><p>від 500 г до 2000 г</p>
+                            <input type="checkbox" id="weight4" value="weight4" v-model="this.filtersList"><p>від 500 г до 2000 г</p>
                             <span class="checkmark"></span>
                         </label>
                         <label class="container-check filters-item" for="weight5">
-                            <input type="checkbox" id="weight5" value="weight5" v-model="this.weightChecked"><p>від 2000 г</p>
+                            <input type="checkbox" id="weight5" value="weight5" v-model="this.filtersList"><p>від 2000 г</p>
                             <span class="checkmark"></span>
                         </label>
                     </div>
@@ -60,19 +60,19 @@
                     </p>
                     <div class="filters-list">
                         <label class="container-check filters-item" for="pack1">
-                            <input type="checkbox" id="pack1" value="гофрокоробка з віконичком" v-model="this.packCheked"><p>гофрокоробка з віконичком</p>
+                            <input type="checkbox" id="pack1" value="гофрокоробка з віконичком" v-model="this.filtersList"><p>гофрокоробка з віконичком</p>
                             <span class="checkmark"></span>
                         </label>
                         <label class="container-check filters-item" for="pack2">
-                            <input type="checkbox" id="pack2" value="гофрокоробка лоток" v-model="this.packCheked"><p>гофрокоробка лоток</p>
+                            <input type="checkbox" id="pack2" value="гофрокоробка лоток" v-model="this.filtersList"><p>гофрокоробка лоток</p>
                             <span class="checkmark"></span>
                         </label>
                         <label class="container-check filters-item" for="pack3">
-                            <input type="checkbox" id="pack3" value="картонна коробка" v-model="this.packCheked"><p>картонна коробка</p>
+                            <input type="checkbox" id="pack3" value="картонна коробка" v-model="this.filtersList"><p>картонна коробка</p>
                             <span class="checkmark"></span>
                         </label>
                         <label class="container-check filters-item" for="pack4">
-                            <input type="checkbox" id="pack4" value="флекс (мягка упаковка)" v-model="this.packCheked"><p>флекс (мягка упаковка)</p>
+                            <input type="checkbox" id="pack4" value="флекс (мягка упаковка)" v-model="this.filtersList"><p>флекс (мягка упаковка)</p>
                             <span class="checkmark"></span>
                         </label>
                     </div>
@@ -116,62 +116,79 @@ export default {
             screenWidth: '',
             openFilter: false,
             goodsList: [],
-            weightChecked: [],
-            packCheked: [],
+            filtersList: [],
             allGoods: [],
         }
     },
     computed:{
         filteredList(){
-            var filtList = []
-            var check = true
-            if(this.packCheked.length){
-                for(var i = 0; i < this.packCheked.length; i++){
-                    for(var j = 0; j < this.allGoods.length; j++){
-                        if(this.allGoods[j].packing.toLowerCase() == this.packCheked[i].toLowerCase()){
-                            check = true
-                            for(var k = 0; k < filtList.length; k++){
-                                if(filtList[k] == this.allGoods[j].name){
-                                    check = false
-                                }
+            var filtered = []
+            var fromWeight = 0
+            var toWeight = 9999
+            var packVal = 'all'
+            if(this.filtersList.length){
+                for(let i = 0; i < this.filtersList.length; i++){
+                    if(this.filtersList[i] == 'weight1'){
+                        fromWeight = 0
+                        toWeight = 150
+                    }
+                    if(this.filtersList[i] == 'weight2'){
+                        fromWeight = 151
+                        toWeight = 300
+                    }
+                    if(this.filtersList[i] == 'weight3'){
+                        fromWeight = 301
+                        toWeight = 500
+                    }
+                    if(this.filtersList[i] == 'weight4'){
+                        fromWeight = 501
+                        toWeight = 2000
+                    }
+                    if(this.filtersList[i] == 'weight5'){
+                        fromWeight = 2000
+                        toWeight = 9999
+                    }
+                    if(this.filtersList[i] == 'гофрокоробка з віконичком'){
+                        packVal = 'гофрокоробка з віконичком'
+                    }
+                    if(this.filtersList[i] == 'гофрокоробка лоток'){
+                        packVal = 'гофрокоробка лоток'
+                    }
+                    if(this.filtersList[i] == 'картонна коробка'){
+                        packVal = 'картонна коробка'
+                    }
+                    if(this.filtersList[i] == 'флекс (мягка упаковка)'){
+                        packVal = 'флекс (мягка упаковка)'
+                    }
+                    for(let j = 0; j < this.goodsList.length; j++){
+                        var wCheck = false
+                        var pCheck = false
+                        var weightList = []
+                        var packList = []
+                        weightList = this.goodsList[j].weightList.split(',');
+                        for(let w = 1; w < weightList.length; w++){
+                            if(weightList[w] >= fromWeight && weightList[w] <= toWeight ){
+                                wCheck = true
                             }
-                            if(check){
-                                filtList.push(this.allGoods[j].name)
+                        }
+                        packList = this.goodsList[j].packing.split(',');
+                        for(let w = 0; w < packList.length; w++){
+                            if(packList[w].toLowerCase() == packVal.toLowerCase()){
+                                pCheck = true
+                            }
+                        }
+                        if(wCheck && pCheck){
+                            const found = filtered.some(el => el.name === this.goodsList[j].name);
+                            if(!found){
+                                filtered.push(this.goodsList[j])
                             }
                         }
                     }
                 }
-            }    
-            if(this.weightChecked.length){
-                for(var i = 0; i < this.weightChecked.length; i++){
-                    if(this.weightChecked[i] == 'weight1'){
-                        var fromWeight = 0
-                        var toWeight = 150
-                    }
-                    if(this.weightChecked[i] == 'weight2'){
-                        var fromWeight = 151
-                        var toWeight = 300
-                    }
-                    if(this.weightChecked[i] == 'weight3'){
-                        var fromWeight = 301
-                        var toWeight = 500
-                    }
-                    if(this.weightChecked[i] == 'weight4'){
-                        var fromWeight = 501
-                        var toWeight = 2000
-                    }
-                    if(this.weightChecked[i] == 'weight5'){
-                        var fromWeight = 2000
-                        var toWeight = 9999
-                    }
-                    for(var j = 0; j < this.allGoods.length; j++){
-                        if(this.allGoods[j].weight >= fromWeight && this.allGoods[j].maxWeight >= toWeight){
-                            filtList.push(this.allGoods[j])
-                        }
-                    }
-                }
+            }else{
+                filtered = this.goodsList
             }
-            return this.goodsList
+            return filtered    
         }
     },
     watch: {
@@ -179,11 +196,6 @@ export default {
             axios.get('https://nash.enott.com.ua/api/goodsNames/' + this.$route.params['category'])
             .then(response => {
                 this.goodsList = response.data;
-                this.$store.dispatch('setLoader', false);
-            })
-            axios.get('https://nash.enott.com.ua/api/getAllGoods/')
-            .then(response => {
-                this.allGoods = response.data;
             })
         }
     },
@@ -193,10 +205,6 @@ export default {
         .then(response => {
             this.goodsList = response.data;
             this.$store.dispatch('setLoader', false);
-        })
-        axios.get('https://nash.enott.com.ua/api/getAllGoods/')
-        .then(response => {
-            this.allGoods = response.data;
         })
     }
 }

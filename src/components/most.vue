@@ -5,7 +5,7 @@
             Ваше улюблене
         </h2>
         <div class="most-content">
-            <carousel class="most-slides" ref="carousel" :wrapAround="true" :breakpoints="breakpoints" v-model="currentSlide">
+            <carousel class="most-slides" ref="carousel" :itemsToScroll="1" :wrapAround="this.wraping" :breakpoints="breakpoints" v-model="currentSlide">
                 <slide class="most-item" v-for="(slide, index) in mosts" :key="index">
                     <router-link :to="`/Goods/${slide.name}/${slide.bar}`">
                         <img :src="`https://nash.enott.com.ua/api/upload/${slide.mainImage}`" alt="Most Image" class="most-img">
@@ -65,19 +65,17 @@ export default {
             screenWidth: '',
             currentSlide: 0,
             paginationList: [],
+            wraping: true,
             goodsList: [],
             breakpoints: {
                 100: {
                     itemsToShow: 1,
-                    snapAlign: 'start',
                 },
-                361: {
+                481: {
                     itemsToShow: 2,
-                    snapAlign: 'start',
                 },
                 1001: {
                     itemsToShow: 2.8,
-                    snapAlign: 'start',
                 },
                 1367: {
                     itemsToShow: 3.7,
@@ -113,6 +111,9 @@ export default {
         .then(response => {
             this.goodsList = response.data;
         })
+        if(this.screenWidth <= 480){
+            this.wraping = false
+        }
     }
 }
 </script>

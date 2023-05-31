@@ -41,6 +41,7 @@
     color: #470D04;
     margin-bottom: 24px;
     max-height: 64px;
+    overflow: hidden;
 }
 .most-item:hover .most-name{
     color: #00A439;
@@ -178,6 +179,14 @@
 @media (max-width: 1000px) {
     .most-item{
         max-width: 209px;
+    }
+}
+@media (max-width: 480px) {
+    .most-item{
+        margin: 0 10px;
+    }
+    .most-name, .most-weight, .most-price{
+        font-size: 16px; 
     }
 }
 @media (max-width: 360px) {

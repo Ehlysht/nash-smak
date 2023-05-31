@@ -100,4 +100,9 @@ export default {
         cursor: pointer;
         width: 150px;
     }
+    @media (max-width: 1000px) {
+        .cabinet-form{
+            width: 80%;
+        }
+    }
 </style>

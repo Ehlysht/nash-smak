@@ -5,17 +5,28 @@
             Головна <img src="@/assets/img/route-arrow.svg" alt="Arrow Right">
         </router-link>
     </li>
-    <li class="route-item" v-if="this.mainPage && this.routeName != 'Онлайн крамниця'">
+    <li class="route-item" v-if="this.mainPage && this.routeName != 'Онлайн крамниця' && !this.routeName2">
         <router-link :to="`/Goods/Онлайн крамниця`">
             Онлайн крамниця <img src="@/assets/img/route-arrow.svg" alt="Arrow Right">
         </router-link>
     </li>
+    <li class="route-item" v-if="this.mainPage2 && this.routeName2 != 'Каталог' && !this.routeName">
+        <router-link :to="`/Goods/Онлайн крамниця`">
+            Каталог <img src="@/assets/img/route-arrow.svg" alt="Arrow Right">
+        </router-link>
+    </li>
     <li class="route-item">
-        <a href="#" v-if="!this.routeSecondName">
+        <a href="#" v-if="!this.routeSecondName && this.routeName">
             {{ this.routeName }} <img v-if="this.routeSecondName" src="@/assets/img/route-arrow.svg" alt="Arrow Right">
         </a>
-        <router-link :to="`/${this.catalog}/${this.routeName}`" v-if="this.routeSecondName">
+        <router-link :to="`/${this.catalog}/${this.routeName}`" v-if="this.routeSecondName && this.routeName">
             {{ this.routeName }} <img v-if="this.routeSecondName" src="@/assets/img/route-arrow.svg" alt="Arrow Right">
+        </router-link>
+        <a href="#" v-if="!this.routeSecondName && this.routeName2">
+            {{ this.routeName2 }} <img v-if="this.routeSecondName" src="@/assets/img/route-arrow.svg" alt="Arrow Right">
+        </a>
+        <router-link :to="`/${this.catalog}/${this.routeName}`" v-if="this.routeSecondName && this.routeName2">
+            {{ this.routeName2 }} <img v-if="this.routeSecondName" src="@/assets/img/route-arrow.svg" alt="Arrow Right">
         </router-link>
     </li>
     <li class="route-item" v-if="this.routeSecondName">
@@ -28,7 +39,7 @@
 
 <script>
 export default {
-    props: ['routeName', 'routeSecondName', 'catalog', 'mainPage']
+    props: ['routeName', 'routeName2', 'routeSecondName', 'catalog', 'mainPage', 'mainPage2']
 }
 </script>
 

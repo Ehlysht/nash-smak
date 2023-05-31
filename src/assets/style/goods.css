@@ -375,9 +375,9 @@
         width: 47%;
     }
 }
-@media (max-width: 360px) {
+@media (max-width: 400px) {
     .goods-item{
-        height: 420px;
+        height: auto;
     }
     .goods-texts{
         width: 100%;
@@ -399,10 +399,5 @@
         height: 260px;
         width: 95%;
         margin: 0 auto 32px;
-    }
-}
-@media (max-width: 360px) {
-    .goods-item{
-        height: auto;
     }
 }

@@ -51,7 +51,7 @@
                     <p class="action-price">
                         {{ item.price }} <span>грн</span>
                     </p>
-                    <div class="action-qtys" v-show="this.visQty != 'no'">
+                    <div class="action-qtys">
                         <img src="@/assets/img/item-arrow.png" alt="Minus" class="action-qty_change action-qty__minus" @click.prevent="changeQty('minus')">
                         <input type="number" class="action-qty_input" id="changeInput" min="1" oninput="this.value = Math.abs(this.value)" v-model="this.itemQty">
                         <img src="@/assets/img/item-arrow.png" style="transform: rotate(180deg);" alt="Plus" class="action-qty_change action-qty_plus" @click.prevent="changeQty('plus')">
@@ -533,34 +533,33 @@ export default {
             }
         },
         addCart(){
-            setTimeout(() => {
-                this.buyed = false
-            }, 400);
-            let config = {
-                headers: {
-                    'Content-Type': 'multipart/form-data'
-                }
-            }
-            let formData = new FormData();
             if(JSON.parse(localStorage.getItem('user'))){
+                setTimeout(() => {
+                    this.buyed = false
+                }, 400);
+                let config = {
+                    headers: {
+                        'Content-Type': 'multipart/form-data'
+                    }
+                }
+                let formData = new FormData();
                 formData.append('email', JSON.parse(localStorage.getItem('user'))[0].email);
+                formData.append('bar', this.$route.params['bar']);
+                formData.append('userQty', this.itemQty);
+                axios.post('https://nash.enott.com.ua/api/toCart', formData, config)
+                .then(response => {
+                    this.saveMessage = true;
+                    setTimeout(() => {
+                        this.saveMessage = false;
+                    }, 3000);
+                    setTimeout(() => {
+                        this.buyed = true
+                    }, 1300);
+                })
+                this.itemQty = 1
             }else{
-               alert("please register or login") 
+                alert("please register or login") 
             }
-            formData.append('email', JSON.parse(localStorage.getItem('user'))[0].email);
-            formData.append('bar', this.$route.params['bar']);
-            formData.append('userQty', this.itemQty);
-            axios.post('https://nash.enott.com.ua/api/toCart', formData, config)
-            .then(response => {
-                this.saveMessage = true;
-                setTimeout(() => {
-                    this.saveMessage = false;
-                }, 3000);
-                setTimeout(() => {
-                    this.buyed = true
-                }, 1300);
-            })
-            this.itemQty = 1
         }
     },  
     watch: {

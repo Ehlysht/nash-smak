@@ -5,7 +5,7 @@
             <p class="head-cart_text" @click.prevent="closeCart()">
                <img src="@/assets/img/return.png" alt="Return"> Повернутися до покупок
             </p>
-            <cartList/>
+            <cart-list/>
         </div>
         <router-view />
         <my-footer/>

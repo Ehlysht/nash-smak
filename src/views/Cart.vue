@@ -1,10 +1,10 @@
 <template>
     <section class="cart" id="cart">
-        <div class="container">
+        <div :class="`${this.screenWidth <= 680 ? 'container-fluid' : 'container'}`">
             <route routeName="Оформлення замовлення"/>
             <div class="cart-content">
                 <form class="cart-form" v-for="user in userInfo" :key="user.email">
-                    <h3 class="cart-title">
+                    <h3 class="cart-title" v-if="this.screenWidth > 680">
                         Будь ласка, заповніть контактну форму
                     </h3>
                     <div class="cart-user">
@@ -90,7 +90,7 @@
                         <div class="user-radio">
                             <input type="radio" name="delivery" id="user-radio4" value="Самовивіз з фабрики" v-model="this.depCheck">
                             <label for="user-radio4" class="user-label">Самовивіз з фабрики</label>
-                            <p class="user-radio_map_text">
+                            <p class="user-radio_map_text" v-if="this.depCheck == 'Самовивіз з фабрики'">
                                 <img src="@/assets/img/maps.png" alt="Maps"> вул. Перемоги, 1, с. Старий Любар 13133
                             </p>
                             <iframe class="user-radio_map" v-if="this.depCheck == 'Самовивіз з фабрики'" src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3138.0413495486246!2d27.689560976870318!3d49.86020562968645!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x472dc8dcece86957%3A0x81c06db17ece39be!2sVul.%20Peremohy%2C%201%2C%20Pedynka%2C%20Zhytomyrs&#39;ka%20oblast%2C%2013144!5e1!3m2!1sen!2sua!4v1684421514485!5m2!1sen!2sua" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
@@ -104,11 +104,11 @@
                             Інтернет-магазин працює на умовах 100% передоплати
                         </p>
                         <div class="user-radio">
-                            <input type="radio" name="payment" id="user-radio5" value="Нова Пошта" v-model="this.payCheck">
+                            <input type="radio" name="payment" id="user-radio5" value="card" v-model="this.payCheck">
                             <label for="user-radio5" class="user-label">Банківською карткою VISA / MasterCard</label>
                         </div>
                         <div class="user-radio">
-                            <input type="radio" name="payment" id="user-radio6" value="Нова Пошта" v-model="this.payCheck">
+                            <input type="radio" name="payment" id="user-radio6" value="mail" v-model="this.payCheck">
                             <label for="user-radio6" class="user-label">За банківськими реквізитами</label>
                             <p class="user-payment_descr">
                                 На картку або розрахунковий рахунок, наш менеджер зателефонує Вам для узгодження способу оплати
@@ -125,7 +125,50 @@
                         <QuillEditor :toolbar="false" class="user-textarea"/>
                     </div>
                 </form>
-                <cart-list/>
+                <cart-list :routeName="true"/>
+            </div>
+            
+            <div class="cart-summary" v-if="this.screenWidth <= 680">
+                <div class="cart-goods_sum">
+                    <p>
+                        Вартість доставки
+                    </p>
+                    <span v-if="this.sumAll > 0">
+                        за тарифами перевізника
+                    </span>
+                    <span v-if="this.sumAll <= 0">
+                        безкоштовна
+                    </span>
+                </div>
+                <div class="cart-goods_sum">
+                    <p>
+                        {{ this.userCart.length }} товари на суму
+                    </p>
+                    <span>
+                        {{ cartSum }} грн
+                    </span>
+                </div>
+                <div class="cart-goods_final">
+                    <p class="cart-goods_final_text">
+                        До оплати
+                    </p>
+                    <p class="cart-goods_final_value">
+                        {{ cartSum }} <span>грн</span>
+                    </p>
+                </div>
+                <p class="cart-goods_alert" v-if="cartSum < 200">
+                    <img src="@/assets/img/alert-cart.png" alt="Alert"> Мінімальна сума замовлення 200 грн
+                </p>
+                <button @click.prevent="payment()" class="cart-goods_btn cart-goods_btn_active" v-if="cartSum >= 200">
+                    <a href="#">Оформити замовлення</a>
+                </button>
+                <button class="cart-goods_btn cart-goods_btn_disable" v-if="cartSum < 200">
+                    Оформити замовлення
+                </button>
+                <label for="cart-goods_agreement" class="cart-goods_agreement container-check">
+                    <input type="checkbox" id="cart-goods_agreement" value="approved" v-model="this.agree"><p>Даю згоду на обробку персональних даних</p>
+                    <span class="checkmark" style="position: relative;"></span>
+                </label>
             </div>
         </div>
         {{ addressDell }}{{ addressPosht }}
@@ -159,10 +202,22 @@ export default {
             maxLength: 100,
             completeAddress: true,
             FullList: [],
-            depCheck: ''
+            depCheck: '',
+            screenWidth: '',
+            sumAll: 0,
+            userCart: []
         }
     },
     computed:{
+        cartSum(){
+            var sum = this.$store.getters.sumValue
+            if((2000 - sum) > 0){
+                this.sumAll = 2000 - sum
+            }else{
+                this.sumAll = 0
+            }
+            return sum
+        },  
         addressDell(){
             if(this.cityValue){
                 var answ = []
@@ -267,8 +322,19 @@ export default {
         onClickOutsideSearchAdd(){
             this.completeAddress = true
         },
+        payment(){
+            if(this.payCheck == 'card'){
+                var privatKey = 'sandbox_xQs3173QoGmt3fD3olfWAjUQrgsmCh7Zgmdb9LpX'
+                var json_string = '{"public_key":"sandbox_i23769093976","version":"3","action":"pay","amount":"' + this.cartSum + '","currency":"UAH","description":"Buy items","order_id":"000001"}'
+                this.valData = btoa(json_string)
+                window.location.href = 'https://www.liqpay.ua/api/3/checkout?data=' + this.valData + '&signature=' + CryptoJS.SHA1(privatKey + this.valData + privatKey).toString(CryptoJS.enc.Base64)
+            }else{
+                alert("Буде приходити повідомлення на пошту про закупівлю")
+            }
+        },
     },
     mounted(){
+        this.screenWidth = screen.width
         if(!JSON.parse(localStorage.getItem('user'))){
             this.checkUser = true
         }else{

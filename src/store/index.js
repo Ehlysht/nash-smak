@@ -9,7 +9,8 @@ const store = createStore({
     regions: [],
     city: [],
     wh: [],
-    loader: true
+    loader: true,
+    sumValue: 0
   },
   getters: {
     cartVisible(state){
@@ -33,7 +34,9 @@ const store = createStore({
     loader(state){
       return state.loader;
     },
-    
+    sumValue(state){
+      return state.sumValue
+    }
   },
   mutations: {
     updateCartVisible(state, cartVisibleVal){
@@ -74,6 +77,9 @@ const store = createStore({
     updateLoder(state, loaderVal){
       state.loader = loaderVal
     },
+    updateSum(state, sumVal){
+      state.sumValue = sumVal
+    },
   },
   actions: {
     setCartVisible({ commit }, cartValue){
@@ -96,6 +102,9 @@ const store = createStore({
       setTimeout(() => {
         commit('updateLoder', false)
       }, 1000);
+    },
+    setSum({ commit }, sumVal){
+      commit('updateSum', sumVal)
     },
   }
 });

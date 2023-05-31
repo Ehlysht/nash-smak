@@ -311,6 +311,8 @@
     }
     .cabinet .route-list{
         padding-top: 20px;
+        position: relative;
+        z-index: 1;
     }
     .cabinet-content, .cabinet-newPassword{
         margin-top: 0;
@@ -325,7 +327,6 @@
         gap: 0 6px;
         height: 178px;
         align-items: end;
-        z-index: -1;
         border-radius: 0;
     }
     .cabinet-item{
@@ -335,6 +336,9 @@
         flex-direction: column;
         font-size: 10px;
         padding: 16px 0 10px;
+    }
+    .cabinet-link:hover{
+        background: #00A439;
     }
     .cabinet-link img{
         margin: 0;

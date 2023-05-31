@@ -10,7 +10,7 @@
                     Наше печиво <img src="@/assets/img/menu-arrow.png" alt="Arrow" class="menu-arrow" :class="`${this.visibleMenu == 1 ? 'menu-arrow_active' : ''}`">
                     <ul class="menu-sublist" v-if="this.visibleMenu == 1">
                         <li class="sublist-item"><router-link to="/Goods/Онлайн крамниця">Онлайн крамниця</router-link></li>
-                        <li class="sublist-item"><router-link to="/">Item2</router-link></li>
+                        <li class="sublist-item"><router-link to="/Catalog/Каталог">Каталог</router-link></li>
                     </ul>
                 </li>
                 <li class="menu-item" @click="openMenu(2)">
@@ -92,7 +92,11 @@ export default {
             this.openVis = !this.openVis
         },
         openCart(){
-            this.$store.dispatch('setCartVisible', true);
+            if(JSON.parse(localStorage.getItem('user'))){
+                this.$store.dispatch('setCartVisible', true);
+            }else{
+                alert("Please login or register!")
+            }
         }
     },
     mounted(){
