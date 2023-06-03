@@ -61,17 +61,26 @@
     .catalog{
         padding: 88px 0 64px;
     }
-    .category-list{
+    .category-list, .catalog-list{
         margin-left: 50px;
+        gap: 0 16px;
     }
 }
 @media (max-width: 1000px) {
     .catalog{
         padding: 80px 0 56px;
     }
-    .category-list{
+    .category-list, .catalog-list{
         gap: 0 38px;
         margin-left: 20px;
+    }
+    .catalog-list{
+        gap: 0 9px;
+    }
+}
+@media (max-width: 480px) {
+    .catalog-list{
+        gap: 0;
     }
 }
 @media (max-width: 360px) {

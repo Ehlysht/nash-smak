@@ -21,6 +21,7 @@
     line-height: 57px;
     text-transform: uppercase;
     margin-bottom: 16px;
+    margin-top: 23px;
 }
 .advertising-text{
     font-weight: 400;
@@ -43,6 +44,7 @@
         height: 450px;
     }
     .advertising-title{
+        margin-top: 6px;
         font-size: 40px;
         line-height: 47px;
     }
@@ -58,6 +60,7 @@
         height: 350px;
     }
     .advertising-title{
+        margin-top: 0;
         font-size: 32px;
         line-height: 38px;
     }
@@ -69,10 +72,12 @@
 @media (max-width: 768px) {
     .advertising-cont{
         flex-direction: column;
+        padding: 0;
     }
     .advertising-info{
         order: 1;
         width: 100%;
+        padding: 0px 24px 58px 40px;
     }
     .advertising-title{
         width: 89%;
@@ -80,6 +85,7 @@
     .advertising-text{
         width: 100%;
         font-size: 18px;
+        margin-bottom: 64px;
     }
     .advertising-img{
         width: 100%;

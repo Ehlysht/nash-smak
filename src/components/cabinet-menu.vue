@@ -24,12 +24,12 @@
                 Вийти
             </router-link>
         </li>
-        <li class="cabinet-item">
+        <!-- <li class="cabinet-item">
             <router-link to="/CMS/Main" class="cabinet-link">
                 <img src="@/assets/img/settings.png" alt="settings">
                 Адміністратор
             </router-link>
-        </li>
+        </li> -->
     </ul>
 </template>
 

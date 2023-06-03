@@ -26,7 +26,7 @@
                 <p class="item-descr">
                     Термін придатності {{ item.еxpiration }}
                 </p>
-                <p class="tasty-descr">
+                <p class="tasty-descr" v-if="tasty">
                     Смак:
                 </p>
                 <ul class="item-tasty" v-for="route in this.goodsList" :key="route.bar">
@@ -485,23 +485,31 @@ export default {
         handleScroll () {
             if(this.screenWidth > 830){
                 var fixedEl = document.querySelector(".item-img_scroll");
-                var fixedEl2 = document.querySelector(".about");
+                if(this.screenWidth <= 1000){
+                    var fixedEl2 = document.querySelector(".item-descr_list")
+                    var fixedHeight = fixedEl2.getBoundingClientRect().height + 150
+                    var itemWidth = '48%'
+                }else{
+                    var fixedEl2 = document.querySelector(".about");
+                    var fixedHeight = fixedEl2.getBoundingClientRect().height
+                    var itemWidth = '45%'
+                }
                 if(fixedEl){
                     if(this.screenWidth >= 1366){
                         var addHeight = 0
                     }else{
                         var addHeight = 50
                     }
-                    if (window.scrollY > fixedEl.offsetTop && fixedEl2.getBoundingClientRect().top - fixedEl2.getBoundingClientRect().height > addHeight ) {
+                    if (window.scrollY > fixedEl.offsetTop && fixedEl2.getBoundingClientRect().top - fixedHeight > addHeight ) {
                         fixedEl.style.position = 'fixed'; 
                         fixedEl.style.top = '0'; 
                         fixedEl.style.bottom = 'auto';
-                        fixedEl.style.width = '45%';
+                        fixedEl.style.width = itemWidth;
                     }else{
                         fixedEl.style.position = 'absolute'; 
                         fixedEl.style.bottom = '50px';
                         fixedEl.style.top = 'auto'; 
-                        fixedEl.style.width = '45%';
+                        fixedEl.style.width = itemWidth;
                     }
                     if(window.scrollY < 196){
                         fixedEl.style.position = 'static'; 

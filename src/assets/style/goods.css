@@ -186,6 +186,13 @@
     line-height: 24px;
     color: #470D04;
 }
+.category-items{
+    display: flex;
+    gap: 0 48px;
+    width: 70%;
+    flex-wrap: wrap;
+    margin-left: auto;
+}
 @media (max-width: 1500px) {
     .goods-list{
         gap: 24px
@@ -230,8 +237,12 @@
         margin-top: 0;
         padding-top: 108px;
     }
+    .goods-list{
+        gap: 32px;
+    }
     .goods-item{
         height: 442px;
+        width: 31%;
     }
     .filter-btn{
         margin: 0;
@@ -396,8 +407,13 @@
         margin-bottom: 20px;
     }
     .goods-img{
-        height: 260px;
+        height: 291px;
         width: 95%;
         margin: 0 auto 32px;
+    }
+}
+@media (max-width: 360px) {
+    .goods-img{
+        height: 260px;
     }
 }

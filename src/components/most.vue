@@ -8,7 +8,10 @@
             <carousel class="most-slides" ref="carousel" :itemsToScroll="1" :wrapAround="this.wraping" :breakpoints="breakpoints" v-model="currentSlide">
                 <slide class="most-item" v-for="(slide, index) in mosts" :key="index">
                     <router-link :to="`/Goods/${slide.name}/${slide.bar}`">
-                        <img :src="`https://nash.enott.com.ua/api/upload/${slide.mainImage}`" alt="Most Image" class="most-img">
+                        <div class="most-image" v-if="this.screenWidth > 1366">
+                            <div class="most-img" :style="`background: url('https://nash.enott.com.ua/api/upload/${slide.mainImage}')center center/cover no-repeat`"></div>
+                        </div>
+                        <img v-if="this.screenWidth <= 1366" class="most-img" :src="`https://nash.enott.com.ua/api/upload/${slide.mainImage}`" alt="Slide">
                         <div class="most-texts">
                             <h3 class="most-name">
                                 {{ slide.name }}
@@ -68,14 +71,17 @@ export default {
             wraping: true,
             goodsList: [],
             breakpoints: {
-                100: {
+                360: {
                     itemsToShow: 1,
+                    snapAlign: 'start',
                 },
-                481: {
+                361: {
                     itemsToShow: 2,
+                    snapAlign: 'start',
                 },
-                1001: {
+                1000: {
                     itemsToShow: 2.8,
+                    snapAlign: 'start',
                 },
                 1367: {
                     itemsToShow: 3.7,
@@ -110,8 +116,9 @@ export default {
         axios.get('https://nash.enott.com.ua/api/goodsNames/Popular')
         .then(response => {
             this.goodsList = response.data;
+            console.log(response.data)
         })
-        if(this.screenWidth <= 480){
+        if(this.screenWidth <= 768){
             this.wraping = false
         }
     }

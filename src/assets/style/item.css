@@ -344,6 +344,7 @@
     }
     .item-weight{
         gap: 10px;
+        margin-bottom: 48px;
     }
     .weight-link{
         width: 150px;
@@ -421,7 +422,7 @@
 }
 @media (max-width: 480px) {
     .item-img_main{
-        max-height: 440px;
+        max-height: 450px;
     }
 }
 @media (max-width: 450px) {
@@ -442,6 +443,12 @@
     }
     .item-title{
         font-size: 36px;
+    }
+    .action-qtys{
+        width: 37%;
+    }
+    .action-btn{
+        width: 55%;
     }
 }
 @media (max-width: 340px) {

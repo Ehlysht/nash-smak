@@ -17,7 +17,7 @@
     background: #FFF7ED;
     box-shadow: 0px 4px 15px rgba(255, 249, 242, 0.15);
     border-radius: 25px;
-    max-width: 402px;
+    max-width: 405px;
     margin-right: 48px;
     border: 1.5px solid transparent;
     align-items: inherit;
@@ -26,9 +26,15 @@
 .most-item:hover{
     border: 1.5px solid #00A439;
 }
+.most-image{
+    width: 360px;
+    height: 360px;
+    padding: 24px 15px;
+    margin-bottom: 16px;
+}
 .most-img{
     width: 100%;
-    margin-bottom: 16px;
+    height: 100%;
 }
 .most-texts{
     padding: 0 45px;
@@ -160,11 +166,16 @@
     .most-arrow{
         width: 96px;
     }
+    .most-img{
+        width: 100%;
+        height: auto;
+        padding: 0;
+    }
 }
 @media (max-width: 1000px) {
     .most-item{
-        max-width: 318px;
         margin-right: 32px;
+        max-width: 311px;
     }
     .most-texts{
         padding: 0;
@@ -176,14 +187,16 @@
         width: 72px;
     }
 }
-@media (max-width: 1000px) {
-    .most-item{
-        max-width: 209px;
+@media (max-width: 768px) {
+    .most-pagination li:last-child{
+        display: none;
     }
 }
 @media (max-width: 480px) {
     .most-item{
-        margin: 0 10px;
+        margin-right: 20px;
+        max-width: 214px;
+        padding: 24px 21px 40px 21px;
     }
     .most-name, .most-weight, .most-price{
         font-size: 16px; 
@@ -193,5 +206,8 @@
     .most-item{
         max-width: 100%;
         margin-right: 0px;
+    }
+    .most-pagination li:last-child{
+        display: block;
     }
 }

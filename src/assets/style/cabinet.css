@@ -234,6 +234,11 @@
     color: #470D04;
     cursor: pointer;
 }
+.cabinet-subscribe_btn>p{
+    font-weight: 500;
+    font-size: 18px;
+    line-height: 24px;
+}
 @media (max-width: 1366px) {
     .cabinet{
         padding: 40px 0 164px;
@@ -269,6 +274,7 @@
 @media (max-width: 768px) {
     .cabinet-menu{
         padding: 20px 16px;
+        width: 232px;
     }
     .cabinet-link{
         font-size: 16px;
@@ -278,6 +284,7 @@
     }
     .cabinet-info{
         padding-left: 40px;
+        width: 68%;
     }
     .cabinet-remember{
         width: 210px;
@@ -303,10 +310,13 @@
         font-size: 14px;
         padding: 5px 0 5px 16px;
     }
+    .cabinet-form{
+        margin-bottom: 0;
+    }
 }
 @media (max-width: 576px) {
     .cabinet{
-        padding: 0px 0 180px;
+        padding: 0px 0 120px;
         position: relative;
     }
     .cabinet .route-list{
@@ -344,19 +354,19 @@
         margin: 0;
     }
     .cabinet-info{
-        margin-top: 218px;
+        margin-top: 182px;
         padding-left: 0;
         width: 100%;
     }
     .cabinet-label, .cabinet-message, .cabint-btn{
         width: 100%;
     }
-    .cabinet-subscribe_text{
+    .cabinet-subscribe{
         width: 80%;
     }
 }
-@media (max-width: 576px) {
-    .cabinet-subscribe_text, .cabinet-subscribe_btn{
+@media (max-width: 360px) {
+    .cabinet-subscribe, .cabinet-subscribe_text{
         width: 100%;
     }
 }

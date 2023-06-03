@@ -55,7 +55,6 @@ export default {
   mounted(){
     this.screenWidth = screen.width
     this.$store.dispatch('setLoader', false);
-    console.log(this.$store.getters.loader)
   }
 }
 </script>

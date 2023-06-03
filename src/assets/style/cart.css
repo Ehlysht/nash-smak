@@ -99,6 +99,16 @@
     width: 100%;
     height: 227px;
     border-radius: 15px;
+    margin-left: 20px;
+}
+.user-radio_map_text{
+    margin-left: 20px;
+    display: flex;
+    align-items: center;
+    margin-bottom: 12px;
+}
+.user-radio_map_text img{
+    margin-right: 8px;
 }
 .user-radio input[type='radio'] {
     display: none;
@@ -194,7 +204,7 @@
 }
 .cart-goods{
     width: 36%;
-    margin-top: 48px;
+    margin-top: 32px;
     padding-left: 68px;
 }
 .cart-goods_free{
@@ -388,6 +398,7 @@
     padding: 24px 0;
     display: flex;
     justify-content: space-between;
+    align-items: center;
     margin-bottom: 24px;
 }
 .cart-goods_final_text{
@@ -498,7 +509,7 @@
         width: 88%;
     }
     .user-alert{
-        width: 90%;
+        width: 100%;
         line-height: 20px;
     }
     .user-payment_descr{
@@ -573,6 +584,17 @@
     .cart-summ_accept .cart-goods{
         background: transparent;
     }
+    .user-radio_map, .user-radio_map_text{
+        margin-left: 0;
+    }
+}
+@media (max-width: 480px) {
+    .cart .route-list{
+        padding: 20px 20px 0px;
+    }
+    .cart-goods{
+        padding: 40px 20px 12px;
+    }
 }
 @media (max-width: 360px) {
     .cart-title{
@@ -592,5 +614,14 @@
     }
     .cart-goods_agreement>p{
         font-size: 14px;
+    }
+    .cart-goods_item_inputs{
+        justify-content: start;
+    }
+    .cart-goods_item{
+        padding: 16px 10px;
+    }
+    .cart-goods_item_price{
+        margin-left: 16px;
     }
 }

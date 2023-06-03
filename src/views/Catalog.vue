@@ -53,26 +53,30 @@
         </ul>
     </div>
     <div class="container">
-        <ul class="goods-list">
-            <li class="goods-item" v-for="item in filteredList" :key="item.id">
-                <router-link :to="`/Goods/${item.name}/${item.bar}`" class="goods-link">
-                    <div class="goods-img">
-                        <div :style="`background:url('https://nash.enott.com.ua/api/upload/${item.mainImage}')center center/100% no-repeat;width:100%;height:100%`"></div>
+        <div class="category-section" v-for="category in this.sectionList" :key="category.subCatalog">
+            <div class="category-section_text">
+                <h3>
+                    {{ category.title }}
+                </h3>
+                <p>
+                    {{ category.descr }}
+                </p>
+            </div>
+            <ul class="category-items">
+                <li class="category-item1" v-for="item in this.catalogList.filter((item) => item.category === category.subCatalog)" :key="item.id">
+                    <div class="category-img">
+                        <div :style="`background:url('https://nash.enott.com.ua/api/upload/${item.img}')center center/100% no-repeat;width:100%;height:100%`"></div>
                     </div>
-                    <h3 class="goods-name">
+                    <div class="category-img_list"  v-for="img in this.imgList.filter((img) => img.name === item.name)" :key="img">
+                        {{ img.img }}
+                    </div>
+                    <h3 class="category-name">
                         {{ item.name }}
                     </h3>
-                    <div class="goods-bottom">
-                        <p class="goods-weight">
-                            Від {{ item.weight }}г
-                        </p>
-                        <p class="goods-price">
-                            Від {{ item.price }} грн
-                        </p>
-                    </div>
-                </router-link>
-            </li>
-        </ul>
+                </li>
+            </ul>
+            <div :style="`background:url('https://nash.enott.com.ua/api/upload/${category.img}')center center/100% no-repeat;width:100%;height:100%`"></div>
+        </div>
     </div>
   </section>
 </template>
@@ -86,12 +90,22 @@ export default {
     },
     data(){
         return{
-            screenWidth: ''
+            screenWidth: '',
+            catalogList: [],
+            imgList: [],
+            sectionList: []
         }
     },
     mounted(){
         this.screenWidth = screen.width
-        this.$store.dispatch('setLoader', false);
+        this.screenWidth = screen.width
+        axios.get('https://nash.enott.com.ua/api/catalogNames')
+        .then(response => {
+            this.catalogList = response.data.itemList;
+            this.imgList = response.data.imgList;
+            this.sectionList = response.data.infoList;
+            this.$store.dispatch('setLoader', false);
+        })
     }
 }
 </script>

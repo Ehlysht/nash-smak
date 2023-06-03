@@ -16,7 +16,7 @@
                 <li class="menu-item" @click="openMenu(2)">
                     Наша історія <img src="@/assets/img/menu-arrow.png" alt="Arrow" class="menu-arrow" :class="`${this.visibleMenu == 2 ? 'menu-arrow_active' : ''}`">
                     <ul class="menu-sublist" v-if="this.visibleMenu == 2">
-                        <li class="sublist-item"><router-link to="/">Item1</router-link></li>
+                        <li class="sublist-item"><router-link to="/Contacts">Контакти</router-link></li>
                         <li class="sublist-item"><router-link to="/">Item2</router-link></li>
                         <li class="sublist-item"><router-link to="/">Item3</router-link></li>
                         <li class="sublist-item"><router-link to="/">Item4</router-link></li>
