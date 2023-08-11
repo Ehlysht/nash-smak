@@ -5,14 +5,24 @@
             Головна <img src="@/assets/img/route-arrow.svg" alt="Arrow Right">
         </router-link>
     </li>
-    <li class="route-item" v-if="this.mainPage && this.routeName != 'Онлайн крамниця' && !this.routeName2">
+    <li class="route-item" v-if="this.mainPage && this.routeName != 'Онлайн крамниця' && !this.routeName2 && !this.routeName3">
         <router-link :to="`/Goods/Онлайн крамниця`">
             Онлайн крамниця <img src="@/assets/img/route-arrow.svg" alt="Arrow Right">
         </router-link>
     </li>
-    <li class="route-item" v-if="this.mainPage2 && this.routeName2 != 'Каталог' && !this.routeName">
+    <li class="route-item" v-if="this.mainPage2 && this.routeName2 != 'Каталог' && !this.routeName && !this.routeName3">
         <router-link :to="`/Goods/Онлайн крамниця`">
             Каталог <img src="@/assets/img/route-arrow.svg" alt="Arrow Right">
+        </router-link>
+    </li>
+    <li class="route-item" v-if="this.mainPage3 && !this.routeName && !this.routeName3">
+        <router-link :to="`/Goods/Онлайн крамниця`">
+            Каталог <img src="@/assets/img/route-arrow.svg" alt="Arrow Right">
+        </router-link>
+    </li>
+    <li class="route-item" v-if="this.mainPage3 && this.routeName && !this.routeName2">
+        <router-link :to="`/Vacancy`">
+            Вакансії <img src="@/assets/img/route-arrow.svg" alt="Arrow Right">
         </router-link>
     </li>
     <li class="route-item">
@@ -39,7 +49,7 @@
 
 <script>
 export default {
-    props: ['routeName', 'routeName2', 'routeSecondName', 'catalog', 'mainPage', 'mainPage2']
+    props: ['routeName', 'routeName2', 'routeSecondName', 'catalog', 'mainPage', 'mainPage2', 'mainPage3']
 }
 </script>
 
@@ -55,7 +65,18 @@ export default {
         display: flex;
         align-items: center;
     }
+    .route-item a:hover{
+        filter: brightness(0) saturate(100%) invert(38%) sepia(37%) saturate(5553%) hue-rotate(125deg) brightness(97%) contrast(101%);
+    }
     .route-item>a>img{
         margin: 0 8px;
+    }
+    @media (max-width: 480px) {
+        .route-list li{
+            display: none;
+        }
+        .route-list li:nth-last-child(2), .route-list li:last-child{
+            display: block;
+        }
     }
 </style>

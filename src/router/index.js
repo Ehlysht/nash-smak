@@ -21,20 +21,60 @@ const routes = [
         title: 'Контакти',
       },
     },
-    {
-      path: "/Login",
-      name: "Login",
-      component: () => import(/* webpackChunkName: "Goods" */ '../views/Login.vue'),
-      meta: {
-        title: 'Увійти',
-      },
-    },
+    // {
+    //   path: "/Login",
+    //   name: "Login",
+    //   component: () => import(/* webpackChunkName: "Goods" */ '../views/Login.vue'),
+    //   meta: {
+    //     title: 'Увійти',
+    //   },
+    // },
     {
       path: "/Cart",
       name: "Cart",
       component: () => import(/* webpackChunkName: "Goods" */ '../views/Cart.vue'),
       meta: {
         title: 'Корзина',
+      },
+    },
+    {
+      path: "/faq",
+      name: "FAQ",
+      component: () => import(/* webpackChunkName: "Goods" */ '../views/faq.vue'),
+      meta: {
+        title: 'Відповіді на популярні запитання',
+      },
+    },
+    {
+      path: "/ordered",
+      name: "Ordered",
+      component: () => import(/* webpackChunkName: "Goods" */ '../views/ordered.vue'),
+      meta: {
+        title: 'Ваше замовлення',
+      },
+    },
+    {
+      path: "/vacancy",
+      name: "Vacancy",
+      component: () => import(/* webpackChunkName: "Goods" */ '../views/vacancy.vue'),
+      meta: {
+        title: 'Вакансії',
+      },
+    },
+    {
+      path: "/vacancy/:id/:name",
+      name: "Job",
+      component: () => import(/* webpackChunkName: "Goods" */ '../views/job.vue'),
+      meta: {
+        title: 'Вакансія',
+      },
+    },
+    {
+      path: "/btb",
+      name: "btb",
+      component: () => import(/* webpackChunkName: "Goods" */ '../views/btb.vue'),
+      meta: {
+        title: 'Ваше замовлення',
       },
     },
     {
@@ -45,14 +85,14 @@ const routes = [
         title: 'Каталог',
       },
     },
-    {
-      path: "/Register",
-      name: "Register",
-      component: () => import(/* webpackChunkName: "Goods" */ '../views/Register.vue'),
-      meta: {
-        title: 'Зареєструватись',
-      },
-    },
+    // {
+    //   path: "/Register",
+    //   name: "Register",
+    //   component: () => import(/* webpackChunkName: "Goods" */ '../views/Register.vue'),
+    //   meta: {
+    //     title: 'Зареєструватись',
+    //   },
+    // },
     {
       path: "/thankyou",
       name: "ThankYou",
@@ -81,7 +121,7 @@ const routes = [
       component: () => import(/* webpackChunkName: "Partners" */ '../views/Item.vue'),
     },
     {
-      path: "/CMS/Main",
+      path: "/CMS/:choice",
       name: "Main",
       component: () => import(/* webpackChunkName: "Goods" */ '../views/CMS/pages/Main.vue'),
       meta: {
@@ -104,6 +144,9 @@ const router = createRouter({
   
   scrollBehavior: function (to, _from, savedPosition) {
     store.dispatch('setCartVisible', false);
+    store.dispatch('setOverlay', false);
+    store.dispatch('setVisibleMenu', false);
+    store.dispatch('setLoginVisible', false);
     if (savedPosition) {
       return savedPosition;
     }

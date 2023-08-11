@@ -1,10 +1,10 @@
 <template>    
-    <section class="cabinet">
+    <section class="thankYou">
         <div class="container">
-            <h2 class="cabiten-title">
+            <h2 class="thankYou-title">
                 Дякуємо за реєстрацію
             </h2>
-            <p class="descr-content_item">
+            <p class="thankYou-descr">
                 Прохання перейти на пошту для підтвердження 
             </p>
         </div>
@@ -15,10 +15,15 @@
 export default {
     mounted(){
         this.$store.dispatch('setLoader', false);
+        this.$store.dispatch('setVisibleMenu', false);
+        this.$store.dispatch('setLoginVisible', false);
+        this.$store.dispatch('setOverlay', false);
     }
 }
 </script>
 
-<style>
-
+<style scoped>
+    .thankYou{
+        padding: 80px 0;
+    }
 </style>

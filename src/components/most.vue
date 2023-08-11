@@ -1,5 +1,5 @@
 <template>
-<div>
+<div v-if="this.goodsList.length">
     <div class="container">
         <h2 class="most-title">
             Ваше улюблене
@@ -8,6 +8,12 @@
             <carousel class="most-slides" ref="carousel" :itemsToScroll="1" :wrapAround="this.wraping" :breakpoints="breakpoints" v-model="currentSlide">
                 <slide class="most-item" v-for="(slide, index) in mosts" :key="index">
                     <router-link :to="`/Goods/${slide.name}/${slide.bar}`">
+                        <div class="goods-item_stamps__list">
+                                <p class="goods-item_stamps goods-item_discount" v-if="slide.stamps2 != 0">-{{ slide.stamps2 }} %</p>
+                                <img class="goods-item_stamps" src="https://nash.enott.com.ua/api/upload/stamps2.png" alt="Бестселлер" v-if="slide.stamps1 != 0">
+                                <img class="goods-item_stamps" src="https://nash.enott.com.ua/api/upload/stamps3.png" alt="Вегетаріанське" v-if="slide.vegan">
+                                <img class="goods-item_stamps" src="https://nash.enott.com.ua/api/upload/stamps4.png" alt="Пісне" v-if="slide.category == 'До посту'">
+                            </div>
                         <div class="most-image" v-if="this.screenWidth > 1366">
                             <div class="most-img" :style="`background: url('https://nash.enott.com.ua/api/upload/${slide.mainImage}')center center/cover no-repeat`"></div>
                         </div>
@@ -42,11 +48,6 @@
                 <li class="most-pagination_item" v-for="(slide, index) in this.paginationList" :key="index" @click.prevent="toSlide(slide.id)" :class="`${slide.id == this.currentSlide ? 'most-pagination_active' : ''}`"></li>
             </ul>
         </div>
-        <button class="btn most-btn" v-if="visibBtn">
-            <router-link to="/"> 
-                Переглянути все <img src="@/assets/img/arrow-right.svg" alt="Arrow">
-            </router-link>
-        </button>
     </div>
 </div>
 </template>
@@ -56,7 +57,6 @@ import 'vue3-carousel/dist/carousel.css'
 import { Carousel, Slide, Pagination, Navigation } from 'vue3-carousel'
 import axios from 'axios'
 export default {
-    props:['visibBtn'],
     components: {
         Carousel,
         Slide,
@@ -71,11 +71,11 @@ export default {
             wraping: true,
             goodsList: [],
             breakpoints: {
-                360: {
+                420: {
                     itemsToShow: 1,
                     snapAlign: 'start',
                 },
-                361: {
+                421: {
                     itemsToShow: 2,
                     snapAlign: 'start',
                 },
@@ -104,6 +104,7 @@ export default {
     },
     computed:{
         mosts(){
+            mostList = []
             var mostList = this.goodsList
             for(var i = 0; i < mostList.length; i++){
                 this.paginationList.push({'id': i})
@@ -116,7 +117,6 @@ export default {
         axios.get('https://nash.enott.com.ua/api/goodsNames/Popular')
         .then(response => {
             this.goodsList = response.data;
-            console.log(response.data)
         })
         if(this.screenWidth <= 768){
             this.wraping = false
@@ -125,6 +125,9 @@ export default {
 }
 </script>
 
-<style>
-
+<style scoped>
+    .goods-item_stamps__list{
+        top: 24px;
+        left: 24px;
+    }
 </style>

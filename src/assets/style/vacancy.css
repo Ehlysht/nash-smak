@@ -1,0 +1,235 @@
+.vacancy{
+    padding: 40px 0 213px;
+    background: #FFF7ED;
+}
+.vacancy-title{
+    font-weight: 600;
+    font-size: 48px;
+    line-height: 40px;
+    color: #470D04;
+    margin: 96px 0 66px;
+    text-transform: uppercase;
+}
+.vacancy-list{
+    display: flex;
+    flex-wrap: wrap;
+    gap: 45px;
+}
+.vacancy-item{
+    width: 31%;
+    background: #FFFEFC;
+    border-radius: 15px;
+    padding: 40px 32px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+.vacancy-item_title{
+    color: #470D04;
+    font-size: 27px;
+    font-weight: 500;
+    line-height: 32px;
+    margin-bottom: 24px;
+}
+.vacancy-item_city{
+    display: flex;
+    margin-bottom: 25px;
+}
+.vacancy-item_city__text{
+    font-size: 18px;
+    color: #470D04;
+    font-weight: 400;
+    margin-left: 4px;
+}
+.vacancy-item_descr{
+    margin-bottom: 80px;
+}
+.vacancy-item_descr *{
+    font-size: 18px;
+    color: #470D04;
+    line-height: 26px;
+}
+.vacancy-link{
+    font-size: 18px;
+    color: #470D04;
+    font-weight: 500;
+}
+.vacancy-link:hover{
+    filter: brightness(0) saturate(100%) invert(38%) sepia(37%) saturate(5553%) hue-rotate(125deg) brightness(97%) contrast(101%);
+}
+.vacancy-stroke{
+    position: absolute;
+    left: 0;
+    margin: 120px 0;
+    width: 100%;
+}
+.vacancy-callback{
+    display: flex;
+    justify-content: space-between;
+    margin-top: 250px;
+}
+.vacancy-callback_texts{
+    width: 37%;
+}
+.vacancy-callback_title{
+    font-size: 24px;
+    font-weight: 500;
+    color: #470D04;
+    text-transform: uppercase;
+    margin-bottom: 32px;
+}
+.vacancy-callback_text{
+    font-size: 18px;
+    color: #470D04;
+    line-height: 26px;
+}
+.vacancy-callback_form{
+    width: 57%;
+    padding: 56px 74px 50px 56px;
+    background: #FFFEFC;
+    border-radius: 15px;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+}
+.vacancy-callback_formTitle{
+    font-size: 24px;
+    font-weight: 500;
+    color: #470D04;
+    text-transform: uppercase;
+    margin-bottom: 32px;
+    width: 100%;
+}
+.vacancy-callback_formLabel{
+    width: 48%;
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 24px;
+}
+.vacancy-callback_formLabel .file-drop-area{
+    margin: 0;
+    width: 100%;
+}
+.vacancy-callback_formLabel p{
+    font-size: 18px;
+    color: #555554;
+    margin-bottom: 5px;
+}
+.vacancy-callback_formLabel p>span{
+    font-size: 18px;
+    color: #FF6161;
+}
+.vacancy-callback_formInput{
+    border-radius: 10px;
+    border: 1px solid #EDEDED;
+    background: #FFFEFC;
+    padding: 15px;
+    color: #470D04;
+    font-size: 18px;
+}
+.vacancy-callback_formfiles{
+    width: 100%;
+}
+.vacancy-callback_formAlert{
+    font-size: 16px;
+    color: #FF6161;
+    margin-bottom: 56px;
+    width: 100%;
+}
+.vacancy-callback_formBtn{
+    padding: 15px 32px;
+    text-align: center;
+    font-size: 18px;
+    color: #fff;
+    background: #00A439;
+    width: 48%;
+    border-radius: 25px;
+    margin-bottom: 20px;
+    margin-left: 0;
+    cursor: pointer;
+    font-weight: 500;
+}
+.vacancy-callback_form .cart-goods_agreement{
+    justify-content: start;
+}
+@media (max-width: 1367px) {
+    .vacancy-title{
+        margin: 56px 0 48px;
+    }
+    .vacancy-item{
+        width: 41%;
+    }
+    .vacancy-callback{
+        flex-direction: column;
+    }
+    .vacancy-callback_texts {
+        width: 49%;
+        margin-bottom: 66px;
+    }
+    .vacancy-callback_form {
+        width: 74%;
+    }
+    .vacancy-stroke{
+        width: auto;
+    }
+}
+@media (max-width: 1000px) {
+    .vacancy-list {
+        gap: 40px;
+    }
+    .vacancy-item {
+        width: 47%;
+    }
+    .vacancy-callback_texts {
+        width: 64%;
+    }
+    .vacancy-callback_form {
+        width: 100%;
+    }
+}
+@media (max-width: 768px) {
+    .vacancy-item {
+        width: 100%;
+    }
+    .vacancy-callback_texts {
+        width: 85%;
+    }
+    .vacancy-callback_form{
+        padding: 56px 32px 50px 30px;
+    }
+}
+@media (max-width: 480px) {
+    .vacancy-title{
+        font-size: 32px;
+        margin: 40px 0;
+    }
+    .vacancy-item {
+        padding: 40px 24px;
+    }
+    .vacancy-item_title{
+        font-size: 25px;
+    }
+    .vacancy-item_descr {
+        margin-bottom: 64px;
+    }
+    .vacancy-callback_texts {
+        width: 100%;
+    }
+    .vacancy-callback_form {
+        padding: 56px 20px 66px;
+    }
+    .vacancy-callback_formLabel{
+        width: 100%;
+    }
+    .vacancy-callback_formBtn{
+        width: 70%;
+    }
+}
+@media (max-width: 400px) {
+    .vacancy-title {
+        font-size: 28px;
+    }
+    .vacancy-callback_formBtn {
+        width: 100%;
+    }
+}

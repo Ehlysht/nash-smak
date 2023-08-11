@@ -1,4 +1,5 @@
 <template>
+<div>
   <section class="contacts" id="contacts">
     <div class="container">
         <route routeName="Контакти"/>
@@ -16,30 +17,30 @@
                 <form class="contacts-form">
                     <label for="contacts-input" class="contacts-label">
                         Ім'я *
-                        <input type="text" name="sName" id="contacts-input" class="contacts-input" v-model="this.fname">
+                        <input type="text" ref="fname" name="sName" id="contacts-input" class="contacts-input" v-model="this.fname">
                     </label>
                     <label for="contacts-input" class="contacts-label">
                         Прізвище
-                        <input type="text" name="fName" id="contacts-input" class="contacts-input" v-model="this.fname">
+                        <input type="text" ref="sname" name="fName" id="contacts-input" class="contacts-input" v-model="this.sname">
                     </label>
                     <label for="contacts-input" class="contacts-label">
                         Телефон
-                        <input type="text" v-maska="'+38 ### ### ## ##'" name="phone" id="contacts-input" class="contacts-input" v-model="this.phone">
+                        <input type="text" ref="phone" v-maska="'+38 ### ### ## ##'" name="phone" id="contacts-input" class="contacts-input" v-model="this.phone">
                     </label>
                     <label for="contacts-input" class="contacts-label">
                         Email *
-                        <input type="email" name="email" id="contacts-input" class="contacts-input" v-model="this.fname">
+                        <input type="email" ref="email" name="email" id="contacts-input" class="contacts-input" v-model="this.email">
                     </label>
-                    <div class="contacts-comments">
+                    <div class="contacts-comments" ref="textContent">
                         <p class="contacts-comments_title">
                             Ваше повідомлення *
                         </p>
-                        <QuillEditor :toolbar="false" class="contacts-textarea"/>
+                        <QuillEditor ref="quilEditor" :toolbar="false" class="contacts-textarea" v-model:content="this.textContent" contentType="html"/>
                     </div>
-                    <p class="contacts-alert">
+                    <p class="contacts-alert" v-if="this.errorMessage">
                         <img src="@/assets/img/alert-cart.png" alt="Alert"> Заповніть обов'язкові поля
                     </p>
-                    <button class="contacts-btn">
+                    <button class="contacts-btn" @click.prevent="sendQuestion()">
                         Відправити
                     </button>
                 </form>
@@ -58,11 +59,11 @@
                         Зв'язок з нами
                     </p>
                     <div class="contacts-social_links">
-                        <a href="#">
+                        <a href="viber://chat?number=+380">
                             <img src="@/assets/img/viber.png" alt="Viber">
                         </a>
                         <a href="#">
-                            <img src="@/assets/img/telegram.png" alt="Viber">
+                            <img src="@/assets/img/telegram.png" alt="Telegram">
                         </a>
                     </div>
                 </div>
@@ -71,17 +72,17 @@
                         Ми у соцмережах
                     </p>
                     <div class="contacts-social_links">
-                        <a href="#">
-                            <img src="@/assets/img/pinterest.png" alt="Viber">
+                        <a href="https://www.pinterest.com/nashsmakua/" target="_blank">
+                            <img src="@/assets/img/pinterest.png" alt="Pinterest">
                         </a>
-                        <a href="#">
-                            <img src="@/assets/img/tiktok.png" alt="Viber">
+                        <a href="https://www.tiktok.com/@nashsmak" target="_blank">
+                            <img src="@/assets/img/tiktok.png" alt="TikTok">
                         </a>
-                        <a href="#">
-                            <img src="@/assets/img/facebook.png" alt="Viber">
+                        <a href="https://www.facebook.com/nashsmak.ua?locale=uk_UA" target="_blank">
+                            <img src="@/assets/img/facebook.png" alt="FaceBook">
                         </a>
-                        <a href="#">
-                            <img src="@/assets/img/instagram.png" alt="Viber">
+                        <a href="https://www.instagram.com/nashsmak.ua/" target="_blank">
+                            <img src="@/assets/img/instagram.png" alt="Instagram">
                         </a>
                     </div>
                 </div>
@@ -89,7 +90,8 @@
         </div>
     </div>
   </section>
-    <insta/>
+  <insta/>
+</div>
 </template>
 
 <script>
@@ -100,8 +102,85 @@ export default {
     components: {
         route, insta
     },
+    data(){
+        return{
+            errorMessage: false,
+            fname: '',
+            sname: '',
+            phone: '',
+            email: '',
+            textContent: ''
+        }
+    },
+    methods:{
+        sendQuestion(){
+            if(!this.fname){
+                var activeClass1 = this.$refs.fname.classList.value
+                this.$refs.fname.classList.value = activeClass1 + ' contacts-error'
+                setTimeout(() => {
+                    this.$refs.fname.classList.value = 'contacts-input'
+                }, 1500);
+            }
+            if(!this.sname){
+                var activeClass2 = this.$refs.sname.classList.value
+                this.$refs.sname.classList.value = activeClass2 + ' contacts-error'
+                setTimeout(() => {
+                    this.$refs.sname.classList.value = 'contacts-input'
+                }, 1500);
+            }
+            if(!this.phone){
+                var activeClass3 = this.$refs.phone.classList.value
+                this.$refs.phone.classList.value = activeClass3 + ' contacts-error'
+                setTimeout(() => {
+                    this.$refs.phone.classList.value = 'contacts-input'
+                }, 1500);
+            }
+            if(!this.email){
+                var activeClass4 = this.$refs.email.classList.value
+                this.$refs.email.classList.value = activeClass4 + ' contacts-error'
+                setTimeout(() => {
+                    this.$refs.email.classList.value = 'contacts-input'
+                }, 1500);
+            }
+            if(!this.textContent){
+                var activeClass5 = this.$refs.textContent.classList.value
+                this.$refs.textContent.classList.value = activeClass5 + ' contacts-error-textarea'
+                setTimeout(() => {
+                    this.$refs.textContent.classList.value = 'contacts-comments'
+                }, 1500);
+            }
+            if(this.fname && this.sname && this.phone && this.email && this.textContent){
+                let config = {
+                    headers: {
+                        'Content-Type': 'multipart/form-data'
+                    }
+                }
+                let formData = new FormData();
+                formData.append('fname', this.fname);
+                formData.append('sname', this.sname);
+                formData.append('phone', this.phone);
+                formData.append('email', this.email);
+                formData.append('textContent', this.textContent);
+                axios.post('https://nash.enott.com.ua/api/contactMessage', formData, config)
+                .then(response => {
+                    alert('Повідомлення надіслано!')
+                    this.fname = ''
+                    this.sname = ''
+                    this.phone = ''
+                    this.email = ''
+                    this.$refs.quilEditor.setHTML('')
+                })
+            }else{
+                this.errorMessage = true
+                setTimeout(() => {
+                    this.errorMessage = false
+                }, 1500);
+            }
+        }
+    },
     mounted(){
         this.$store.dispatch('setLoader', false);
+        this.$store.dispatch('setVisibleMenu', false);
     }
 }
 </script>

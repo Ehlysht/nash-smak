@@ -31,7 +31,7 @@
                             Ви успішно змінили обліковий запис
                         </p>
                     </transition>
-                    <button class="cabint-btn" @click.prevent="changeInfo()">
+                    <button class="cabint-btn" @click.prevent="this.popAppAccept = 'changeInfo'">
                         Зберегти зміни
                     </button>
                 </form>
@@ -40,17 +40,18 @@
                         Місто
                         <input @click="this.completeCity = false; cityList()" @input="cityList()" type="text" name="firstName" id="cabinet-input" class="cabinet-input" v-model="this.cityValue" placeholder="Оберіть місто">
                         <ul class="cabinet-list" v-if="!this.completeCity" @scroll="handleScroll('cabinet-list_city')" id="cabinet-list_city">
+                            
                             <li @click.prevent="cityList(city.citys)" v-for="city in this.citysList" :key="city.citys" :value="city.citys">
                                 {{ city.citys }}
                             </li>
                         </ul>
                     </label>
                     <div for="cabinet-radio1" class="cabinet-label cabinet-radio">
-                        <input type="radio" name="delivery" id="cabinet-radio1" value="Нова Пошта" v-model="this.depCheck" :checked="this.depCheck == 'Нова Пошта (відділення)'">
+                        <input type="radio" name="delivery" id="cabinet-radio1" value="Нова Пошта" @click="this.cityValue = ''; this.addressValue = ''" v-model="this.depCheck" :checked="this.depCheck == 'Нова Пошта (відділення)'">
                         <label for="cabinet-radio1" class="cabinet-label">Нова Пошта (відділення)</label>
                     </div>
                     <div for="cabinet-radio2" class="cabinet-label cabinet-radio cabinet-radio_second">
-                        <input type="radio" name="delivery" id="cabinet-radio2" value="Укрпошта" v-model="this.depCheck" :checked="this.depCheck == 'Укрпошта'">
+                        <input type="radio" name="delivery" id="cabinet-radio2" @click="this.cityValue = ''; this.addressValue = ''" value="Укрпошта" v-model="this.depCheck" :checked="this.depCheck == 'Укрпошта'">
                         <label for="cabinet-radio2" class="cabinet-label">Укрпошта</label>
                     </div>
                     <label v-click-outside="onClickOutsideSearchAdd" for="delSelect" class="cabinet-label cabinet-label_select">
@@ -67,12 +68,12 @@
                             Ви успішно змінили обліковий запис
                         </p>
                     </transition>
-                    <button class="cabint-btn" @click.prevent="changeInfo()">
+                    <button class="cabint-btn" @click.prevent="this.popAppAccept = 'changeInfo'">
                         Зберегти зміни
                     </button>
                 </form>
                 <form v-if="this.$route.params.choice == 'password'" class="cabinet-form">
-                    <label for="cabinet-input" class="cabinet-label">
+                    <label for="cabinet-input" class="cabinet-label" v-if="this.oldPass != 'googleAccount'">
                         Старий пароль
                         <input type="password" name="subName" id="cabinet-input" class="cabinet-input" v-model="this.oldPass">
                     </label>
@@ -92,7 +93,7 @@
                             Ви успішно змінили обліковий запис
                         </p>
                     </transition>
-                    <button class="cabint-btn" @click.prevent="changePassord()">
+                    <button class="cabint-btn" @click.prevent="this.popAppAccept = 'changePassword'">
                         Зберегти зміни
                     </button>
                 </form>
@@ -103,16 +104,16 @@
                     <p class="cabinet-subscribe_text">
                         Ви отримуєте email повідомлення про новинки та акції Наш смак
                     </p>
-                    <button class="cabinet-subscribe_btn" @click.prevent="subscribe()">
-                        <p v-if="this.subStatus == 'true'">Відписатися</p>
-                        <p v-if="this.subStatus == 'false'">Підписатись</p>
+                    <button class="cabinet-subscribe_btn" @click.prevent="this.popAppAccept = 'subscribe'">
+                        <p v-if="this.subStatus">Відписатися</p>
+                        <p v-if="!this.subStatus">Підписатись</p>
                     </button>
                 </div>
-                <div class="cabinet-remember" v-if="this.$route.params.choice == 'password'">
+                <div class="cabinet-remember" v-if="this.$route.params.choice == 'password' && this.oldPass != 'googleAccount'">
                     <h3 class="cabinet-subscribe_title">
                         Забули пароль?
                     </h3>
-                    <button class="cabint-btn" @click.prevent="restorePass()">
+                    <button class="cabint-btn" @click.prevent="this.popAppAccept = 'restorePass'">
                         Надіслати на Email
                     </button>
                 </div>
@@ -122,6 +123,22 @@
     {{ addressListss }}
   </section>
   <insta/>
+  <Transition name="fade">
+    <div class="access-popApp" v-if="this.popAppAccept">
+        <div class="access-popApp_block">
+            <p class="access-popApp_text">
+                Ви дійсно хочете зберегти зміни?
+            </p>
+            <div class="access-popApp_btns">
+                <button class="access-popApp_yes btn" v-if="popAppAccept == 'changeInfo'" @click.prevent="changeInfo()"><a href="#">Так</a></button>
+                <button class="access-popApp_yes btn" v-if="popAppAccept == 'subscribe'" @click.prevent="subscribe()"><a href="#">Так</a></button>
+                <button class="access-popApp_yes btn" v-if="popAppAccept == 'changePassword'" @click.prevent="changePassword()"><a href="#">Так</a></button>
+                <button class="access-popApp_yes btn" v-if="popAppAccept == 'restorePass'" @click.prevent="restorePass()"><a href="#">Так</a></button>
+                <button class="access-popApp_no btn" @click.prevent="this.popAppAccept = false"><a href="#">Ні</a></button>
+            </div>
+        </div>
+    </div>
+  </Transition>
 </div>
 </template>
 
@@ -154,6 +171,8 @@ export default {
             FullList: [],
             userInfo: [],
             testCity: [],
+            ukrCity: [],
+            urkAddress: [],
             maxLength: 100,
             sname: '',
             fname: '',
@@ -161,7 +180,9 @@ export default {
             email: '',
             oldPass: '',
             newPass: '',
-            newConfirmPass: ''
+            newConfirmPass: '',
+            ukrcities: [],
+            popAppAccept: false,
         }
     },
     computed:{
@@ -177,27 +198,59 @@ export default {
         addressListss(){
             if(this.cityValue){
                 var answ = []
-                const api = new NovaPoshta({ apiKey: '1805304084717f37c3824fd9898eece6' });
-                api.address
-                .getWarehouses({'CityName': this.cityValue.substring(0, this.cityValue.search(' - ')), 'BicycleParking ': '1'})
-                .then((json) => {
-                    this.FullList = json.data
+                if(this.depCheck == 'Нова Пошта'){
+                    const api = new NovaPoshta({ apiKey: '1805304084717f37c3824fd9898eece6' });
+                    api.address
+                    .getWarehouses({'CityName': this.cityValue.substring(0, this.cityValue.search(' - ')), 'BicycleParking ': '1'})
+                    .then((json) => {
+                        this.FullList = json.data
+                        for(var i = 0; i < this.FullList.length; i++){
+                            if(this.FullList[i].Description.substring(0,10) == 'Відділення'){
+                                answ.push(this.FullList[i])
+                            }
+                        }
+                        this.FullList = answ
+                    })
+                    .catch((errors) => {
+                        if (Array.isArray(errors)) {
+                            errors.forEach((error) => console.log(`[${ error.code || '-' }] ${ error.en || error.uk || error.ru || error.message }`));
+                        }
+                    });
+                }else{
+                    this.FullList = this.urkAddress
+                    
                     for(var i = 0; i < this.FullList.length; i++){
-                        if(this.FullList[i].Description.substring(0,10) == 'Відділення'){
+                        if(this.FullList[i].citys == this.cityValue){
                             answ.push(this.FullList[i])
                         }
                     }
                     this.FullList = answ
-                })
-                .catch((errors) => {
-                    if (Array.isArray(errors)) {
-                        errors.forEach((error) => console.log(`[${ error.code || '-' }] ${ error.en || error.uk || error.ru || error.message }`));
-                    }
-                });
+                }
             }
         }
     },
     methods:{
+        getCitiesWithPostOffices() {
+            const url = 'https://api.ukrposhta.ua/address-classifier-ws/rest/address/searchSettlements';
+            const api_key = 'YOUR_API_KEY';
+
+            const requestData = {
+                "postcode": "00000" // Встановіть поштовий індекс за своїми потребами
+            };
+
+            axios.post(url, requestData, {
+                headers: {
+                'Authorization': `Bearer ${api_key}`,
+                'Content-Type': 'application/json'
+                }
+            })
+            .then(response => {
+                this.ukrcities = response.data;
+            })
+            .catch(error => {
+                console.error(error);
+            });
+        },
         handleScroll(id){
             const element = document.getElementById(id);
             let lastScrollTop = 0;
@@ -216,7 +269,11 @@ export default {
             }
         },
         cityList(clickedItem){
-            var array = this.testCity
+            if(this.depCheck == 'Нова Пошта'){
+                var array = this.testCity
+            }else{
+                var array = this.ukrCity
+            }
             var maxValue = 0
             if(this.maxLength >= array.length){
                 maxValue = array.length
@@ -239,19 +296,26 @@ export default {
                 }
             }
             if(clickedItem){
-                this.cityValue = clickedItem
-                this.completeCity = true
-                const api = new NovaPoshta({ apiKey: '1805304084717f37c3824fd9898eece6' });
-                api.address
-                .getWarehouses({'CityName': clickedItem.substring(0, clickedItem.search(' - ')), 'BicycleParking ': '1'})
-                .then((json) => {
-                    this.addressList = json.data
-                })
-                .catch((errors) => {
-                    if (Array.isArray(errors)) {
-                        errors.forEach((error) => console.log(`[${ error.code || '-' }] ${ error.en || error.uk || error.ru || error.message }`));
-                    }
-                });
+                if(this.depCheck == 'Нова Пошта'){
+                    this.cityValue = clickedItem
+                    this.completeCity = true
+                    const api = new NovaPoshta({ apiKey: '1805304084717f37c3824fd9898eece6' });
+                    api.address
+                    .getWarehouses({'CityName': clickedItem.substring(0, clickedItem.search(' - ')), 'BicycleParking ': '1'})
+                    .then((json) => {
+                        this.addressList = json.data
+                    })
+                    .catch((errors) => {
+                        if (Array.isArray(errors)) {
+                            errors.forEach((error) => console.log(`[${ error.code || '-' }] ${ error.en || error.uk || error.ru || error.message }`));
+                        }
+                    });
+                }else{
+                    this.cityValue = clickedItem
+                    this.completeCity = true
+                    this.addressList = this.urkAddress
+                }
+                
             }
         },
         updateWh(){
@@ -259,7 +323,6 @@ export default {
         onClickOutsideSearch(){
             this.completeCity = true
         },
-        
         onClickOutsideSearchAdd(){
             this.completeAddress = true
         },
@@ -279,6 +342,7 @@ export default {
             formData.append('delAddress', this.addressValue);
             axios.post('https://nash.enott.com.ua/api/changeUser', formData, config)
             .then(response => {
+                this.popAppAccept = false
                 this.saveMessage = true;
                 setTimeout(() => {
                     this.saveMessage = false;
@@ -286,12 +350,6 @@ export default {
             })
         },
         subscribe(){
-            var subscribe = ''
-            if(this.subStatus != 'false'){
-                subscribe = 'false'
-            }else{
-                subscribe = 'true'
-            }
             let config = {
                 headers: {
                     'Content-Type': 'multipart/form-data'
@@ -299,27 +357,32 @@ export default {
             }
             let formData = new FormData();
             formData.append('email', JSON.parse(localStorage.getItem('user'))[0].email);
-            formData.append('status', subscribe);
+            if(this.subStatus){
+                formData.append('status', 'remove');
+            }else{
+                formData.append('status', 'add');
+            }
             axios.post('https://nash.enott.com.ua/api/subscribe', formData, config)
             .then(response => {
-                let config = {
-                    headers: {
-                        'Content-Type': 'multipart/form-data'
-                    }
-                }
-                let formData = new FormData();
-                formData.append('email', JSON.parse(localStorage.getItem('user'))[0].email);
-                axios.post('https://nash.enott.com.ua/api/getUser', formData, config)
+                this.popAppAccept = false
+                let formData1 = new FormData();
+                formData1.append('email', JSON.parse(localStorage.getItem('user'))[0].email);
+                axios.post('https://nash.enott.com.ua/api/getUser', formData1, config)
                 .then(response => {
-                    this.userInfo = response.data
+                    this.userInfo = response.data.answerAdm
                     this.email = JSON.parse(localStorage.getItem('user'))[0].email
-                    this.fname = response.data[0].first_name
-                    this.sname = response.data[0].second_name
-                    this.phone = response.data[0].phone
-                    this.cityValue = response.data[0].city
-                    this.depCheck = response.data[0].department
-                    this.addressValue = response.data[0].delivery
-                    this.subStatus = response.data[0].subscribe
+                    this.fname = response.data.answerAdm[0].first_name
+                    this.sname = response.data.answerAdm[0].second_name
+                    this.phone = response.data.answerAdm[0].phone
+                    this.cityValue = response.data.answerAdm[0].city
+                    this.depCheck = response.data.answerAdm[0].department
+                    this.addressValue = response.data.answerAdm[0].delivery
+                    if(response.data.subscribe){
+                        this.subStatus = true
+                    }else{
+                        this.subStatus = false
+                    }
+                    this.$store.dispatch('setLoader', false);
                 })
                 this.saveMessage = true;
                 setTimeout(() => {
@@ -327,7 +390,7 @@ export default {
                 }, 3000);
             })
         },
-        async changePassord(){
+        async changePassword(){
             let config = {
                 headers: {
                     'Content-Type': 'multipart/form-data'
@@ -339,11 +402,15 @@ export default {
             formData.append('newPass', this.newPass);
             await axios.post('https://nash.enott.com.ua/api/changePassword', formData, config)
             .then(response => {
+                this.popAppAccept = false
                 if(response.data.status){
                     this.saveMessage = true;
                     setTimeout(() => {
                         this.saveMessage = false;
                     }, 3000);
+                    this.oldPass = ''
+                    this.newPass = ''
+                    this.newConfirmPass = ''
                 }else{
                     alert("Невірний пароль")
                 }
@@ -359,6 +426,7 @@ export default {
             formData.append('email', JSON.parse(localStorage.getItem('user'))[0].email);
             axios.post('https://nash.enott.com.ua/api/restorePass', formData, config)
             .then(response => {
+                this.popAppAccept = false
                 this.saveMessage = true;
                 setTimeout(() => {
                     this.saveMessage = false;
@@ -367,6 +435,9 @@ export default {
         }
     },
     mounted(){
+        if(JSON.parse(localStorage.getItem('user'))[0].role == 'googleAccount'){
+            this.oldPass = 'googleAccount'
+        }
         this.screenWidth = screen.width
         let config = {
             headers: {
@@ -377,15 +448,19 @@ export default {
         formData.append('email', JSON.parse(localStorage.getItem('user'))[0].email);
         axios.post('https://nash.enott.com.ua/api/getUser', formData, config)
         .then(response => {
-            this.userInfo = response.data
+            this.userInfo = response.data.answerAdm
             this.email = JSON.parse(localStorage.getItem('user'))[0].email
-            this.fname = response.data[0].first_name
-            this.sname = response.data[0].second_name
-            this.phone = response.data[0].phone
-            this.cityValue = response.data[0].city
-            this.depCheck = response.data[0].department
-            this.addressValue = response.data[0].delivery
-            this.subStatus = response.data[0].subscribe
+            this.fname = response.data.answerAdm[0].first_name
+            this.sname = response.data.answerAdm[0].second_name
+            this.phone = response.data.answerAdm[0].phone
+            this.cityValue = response.data.answerAdm[0].city
+            this.depCheck = response.data.answerAdm[0].department
+            this.addressValue = response.data.answerAdm[0].delivery
+            if(response.data.subscribe){
+                this.subStatus = true
+            }else{
+                this.subStatus = false
+            }
             this.$store.dispatch('setLoader', false);
         })
         var cityList = []
@@ -403,6 +478,12 @@ export default {
                 errors.forEach((error) => console.log(`[${ error.code || '-' }] ${ error.en || error.uk || error.ru || error.message }`));
             }
         });
+        axios.get('https://nash.enott.com.ua/api/getUkrPoshta')
+        .then(response => {
+            this.ukrCity = response.data.uniqList;
+            this.urkAddress = response.data.allList;
+        })
+        this.$store.dispatch('setVisibleMenu', false);
     }
 }
 </script>

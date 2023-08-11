@@ -6,7 +6,8 @@
             <div class="item-img" id="item-img">
                 <div class="item-img_scroll">
                     <div class="item-img_main">
-                        <div :style="`background: url('https://nash.enott.com.ua/api/upload/${this.itemImage}')left top/cover no-repeat;`" class="img_main"></div>
+                        <img v-if="screenWidth <= 768" :src="`https://nash.enott.com.ua/api/upload/${this.itemImage}`" :alt="this.itemImage" class="img_main">
+                        <div v-if="screenWidth > 768" :style="`background: url('https://nash.enott.com.ua/api/upload/${this.itemImage}')left top/100% no-repeat;`" class="img_main"></div>
                     </div>
                     <div class="item-img_array">
                         <div @click.prevent="changeImage(img.img)" v-for="img in this.imageArrays" :key="img.img" :class="`${this.itemImage == img.img ? 'img_array_active' : ''}`" :style="`background: url('https://nash.enott.com.ua/api/upload/${img.img}')left top/cover no-repeat;`"></div>
@@ -18,15 +19,14 @@
                     {{ item.name }}
                 </h2>
                 <p class="item-subTitle">
-                    З АРОМАТОМ ПРЯЖЕНОГО МОЛОКА
+                    {{ item.subName }}
                 </p>
-                <p class="item-descr">
-                    {{ item.shortDescr }}
+                <p class="item-descr" v-html="item.shortDescr">
                 </p>
                 <p class="item-descr">
                     Термін придатності {{ item.еxpiration }}
                 </p>
-                <p class="tasty-descr" v-if="tasty">
+                <p class="tasty-descr" v-if="tasty.length">
                     Смак:
                 </p>
                 <ul class="item-tasty" v-for="route in this.goodsList" :key="route.bar">
@@ -49,19 +49,24 @@
                 </ul>
                 <div class="item-action">
                     <p class="action-price">
-                        {{ item.price }} <span>грн</span>
+                        <span class="action-oldPrice" v-if="item.stamps2 != 0">
+                            {{ item.price }} грн
+                        </span>
+                        {{ item.discondPrice }} <span>грн</span>
                     </p>
                     <div class="action-qtys">
                         <img src="@/assets/img/item-arrow.png" alt="Minus" class="action-qty_change action-qty__minus" @click.prevent="changeQty('minus')">
                         <input type="number" class="action-qty_input" id="changeInput" min="1" oninput="this.value = Math.abs(this.value)" v-model="this.itemQty">
                         <img src="@/assets/img/item-arrow.png" style="transform: rotate(180deg);" alt="Plus" class="action-qty_change action-qty_plus" @click.prevent="changeQty('plus')">
                     </div>
-                    <button v-wave class="action-btn" @click.prevent="addCart" v-if="this.buyed">
+                    <button v-wave class="action-btn" @click.prevent="addCart" v-if="!this.buyed">
                         Купити <img src="@/assets/img/bag.png" alt="Bag">
                     </button>
-                    <button class="action-btn" v-if="!this.buyed">
-                        В кошику <img src="@/assets/img/buyed.png" alt="Bag" style="filter: brightness(0) saturate(100%) invert(100%) sepia(0%) saturate(7471%) hue-rotate(314deg) brightness(100%) contrast(115%);">
-                    </button>
+                    <transition name="greenBtn">
+                        <button class="action-btn action-btn_buyed" v-if="this.buyed">
+                            В кошику <img src="@/assets/img/buyed.png" alt="Bag">
+                        </button>
+                    </transition>
                 </div>
                 <ul class="item-descr_list" v-if="this.screenWidth > 1050">
                     <li class="descr-item" @click.prevent="descrOpen('recipe')">
@@ -73,15 +78,15 @@
                             <img src="@/assets/img/descr-minus.png" alt="minus" v-if="this.descrValue == 'recipe'">
                         </div>
                         <transition name="fadeHeight"> 
-                        <div class="descr-content" v-if="this.descrValue == 'recipe'">
-                            <div class="descr-images">
-                                <img src="@/assets/img/icon1.png" alt="Icon1">
-                                <img src="@/assets/img/icon2.png" alt="Icon2">
-                                <img src="@/assets/img/icon3.png" alt="Icon3">
-                                <img src="@/assets/img/icon4.png" alt="Icon4">
+                            <div class="descr-content" v-if="this.descrValue == 'recipe'">
+                                <div class="descr-images">
+                                    <img src="@/assets/img/icon1.png" alt="Icon1">
+                                    <img src="@/assets/img/icon2.png" alt="Icon2">
+                                    <img src="@/assets/img/icon3.png" alt="Icon3">
+                                    <img src="@/assets/img/icon4.png" alt="Icon4">
+                                </div>
+                                <div v-html="item.recipe"></div>
                             </div>
-                            <p v-html="item.recipe"></p>
-                        </div>
                         </transition>
                     </li>
                     <li class="descr-item" @click.prevent="descrOpen('nutritional')">
@@ -455,15 +460,24 @@ export default {
             itemName: '',
             itemImage: '',
             descrValue: false,
-            buyed: true,
-            imageArrays: [
-                {'img': 'item1.png'},
-                {'img': 'item2.png'}
-            ],
+            imageArrays: [],
             itemQty: 1
         }
     },
     computed:{
+        buyed(){
+            var barsList = this.$store.getters.ifExistCart
+            if(barsList){
+                for(let i = 0; i < barsList.length; i++){
+                    if(barsList[i].bar === this.$route.params['bar']){
+                        return true
+                    }
+                }
+            }else{
+                return false
+            }
+            
+        },
         tasty(){
             var endList = []
             var checker = false
@@ -485,15 +499,18 @@ export default {
         handleScroll () {
             if(this.screenWidth > 830){
                 var fixedEl = document.querySelector(".item-img_scroll");
-                if(this.screenWidth <= 1000){
-                    var fixedEl2 = document.querySelector(".item-descr_list")
-                    var fixedHeight = fixedEl2.getBoundingClientRect().height + 150
-                    var itemWidth = '48%'
-                }else{
-                    var fixedEl2 = document.querySelector(".about");
-                    var fixedHeight = fixedEl2.getBoundingClientRect().height
-                    var itemWidth = '45%'
+                if(fixedEl){
+                    if(this.screenWidth <= 1000){
+                        var fixedEl2 = document.querySelector(".item-descr_list")
+                        var fixedHeight = fixedEl2.getBoundingClientRect().height + 150
+                        var itemWidth = '48%'
+                    }else{
+                        var fixedEl2 = document.querySelector(".about");
+                        var fixedHeight = fixedEl2.getBoundingClientRect().height
+                        var itemWidth = '45%'
+                    }
                 }
+                
                 if(fixedEl){
                     if(this.screenWidth >= 1366){
                         var addHeight = 0
@@ -540,34 +557,56 @@ export default {
                 this.descrValue = val
             }
         },
-        addCart(){
-            if(JSON.parse(localStorage.getItem('user'))){
-                setTimeout(() => {
-                    this.buyed = false
-                }, 400);
-                let config = {
-                    headers: {
-                        'Content-Type': 'multipart/form-data'
-                    }
+        async addCart(){
+            let config = {
+                headers: {
+                    'Content-Type': 'multipart/form-data'
                 }
-                let formData = new FormData();
+            }
+            let formData = new FormData();
+            if(JSON.parse(localStorage.getItem('user'))){
                 formData.append('email', JSON.parse(localStorage.getItem('user'))[0].email);
                 formData.append('bar', this.$route.params['bar']);
                 formData.append('userQty', this.itemQty);
                 axios.post('https://nash.enott.com.ua/api/toCart', formData, config)
                 .then(response => {
+                    this.$store.dispatch('setPosInCart');
+                    this.$store.dispatch('setIfExistCart');
+                    setTimeout(() => {
+                        
+                    }, 600);
                     this.saveMessage = true;
                     setTimeout(() => {
                         this.saveMessage = false;
                     }, 3000);
-                    setTimeout(() => {
-                        this.buyed = true
-                    }, 1300);
                 })
                 this.itemQty = 1
             }else{
-                alert("please register or login") 
+                await axios.post('https://nash.enott.com.ua/api/registerTemp', formData, config)
+                .then(response => {
+                    var userInfo = [
+                        {'email': response.data.email, 'role': response.data.role, 'token': response.data.token}
+                    ]
+                    localStorage.setItem("user", JSON.stringify(userInfo))
+                    formData.append('email', JSON.parse(localStorage.getItem('user'))[0].email);
+                    formData.append('bar', this.$route.params['bar']);
+                    formData.append('userQty', this.itemQty);
+                    axios.post('https://nash.enott.com.ua/api/toCart', formData, config)
+                    .then(response => {
+                        this.$store.dispatch('setPosInCart');
+                        this.$store.dispatch('setIfExistCart');
+                        setTimeout(() => {
+                            
+                        }, 600);
+                        this.saveMessage = true;
+                        setTimeout(() => {
+                            this.saveMessage = false;
+                        }, 3000);
+                    })
+                    this.itemQty = 1
+                })
             }
+            
         }
     },  
     watch: {
@@ -580,8 +619,10 @@ export default {
                 this.weightList = response.data.Weights
                 this.itemImage = response.data.mainImg
                 this.allTasty = response.data.tastyList
+                this.imageArrays = response.data.imageArray
                 this.$store.dispatch('setLoader', false);
             })
+            this.$store.dispatch('setIfExistCart');
             this.itemQty = 1
         }
     },
@@ -597,9 +638,12 @@ export default {
             this.weightList = response.data.Weights
             this.itemImage = response.data.mainImg
             this.allTasty = response.data.tastyList
+            this.imageArrays = response.data.imageArray
             this.$store.dispatch('setLoader', false);
         })
+        this.$store.dispatch('setIfExistCart');
         this.handleScroll()
+        this.$store.dispatch('setVisibleMenu', false);
     }
 }
 </script>

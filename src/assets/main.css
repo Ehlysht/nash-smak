@@ -14,6 +14,16 @@
 @import "./style/goods.css";
 @import "./style/item.css";
 @import "./style/cabinet.css";
+@import "./style/login.css";
 @import "./style/cart.css";
 @import "./style/contacts.css";
 @import "./style/footer.css";
+@import "./style/faq.css";
+@import "./style/ordered.css";
+@import "./style/vacancy.css";
+@import "./style/job.css";
+@import "../views/CMS/css/adminPage.css";
+
+/* Other */
+@import "./style/animations.css";
+@import "./style/btb.css";

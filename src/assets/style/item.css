@@ -54,6 +54,11 @@
     margin-right: 16px;
     border-radius: 5px;
     border: 1.5px solid transparent;
+    cursor: pointer;
+    transition: all 0.5s ease;
+}
+.item-img_array>div:hover{
+    border: 1.5px solid #00A439;
 }
 .img_array_active{
     border: 1.5px solid #00A439 !important;
@@ -80,9 +85,15 @@
     line-height: 26px;
     color: #470D04;
     margin-bottom: 16px;
-
 }
-.item-tasty, .item-weight{
+.item-tasty{
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    width: 384px;
+    gap: 16px;
+}
+.item-weight{
     display: flex;
     align-items: center;
 }
@@ -95,8 +106,6 @@
     height: 64px;
     display: flex;
     justify-content: center;
-    margin-right: 16px;
-    margin-bottom: 16px;
 }
 .item-tasty>li::after{
     content: '';
@@ -110,6 +119,10 @@
     background: #FFF7ED;
     z-index: -1;
     border: 1.5px solid transparent;
+    transition: all 0.5s ease;
+}
+.item-tasty>li:hover::after{
+    border: 1.5px solid #00A439;
 }
 .item-tasty>li.tasty-active::after{
     border: 1.5px solid #00A439;
@@ -118,6 +131,12 @@
     display: flex;
     justify-content: center;
     align-items: center;
+    width: 100%;
+    height: 100%;
+}
+.tasty-img{
+    width: 100%;
+    height: auto;
 }
 .tasty-img_grey{
     -webkit-filter: grayscale(100%); /* Safari 6.0 - 9.0 */
@@ -155,6 +174,7 @@
     color: #470D04;
     display: flex;
     align-items: center;
+    position: relative;
 }
 .action-price>span{
     font-weight: 500;
@@ -162,6 +182,16 @@
     line-height: 24px;
     color: #470D04;
     margin-left: 10px;
+}
+.action-oldPrice{
+    top: -30px;
+    left: -8px;
+    font-weight: 400 !important;
+    position: absolute;
+    font-size: 22px !important;
+    color: #A6A4A2 !important;
+    text-decoration: line-through;
+    text-decoration-color: #FD1515;
 }
 .action-qtys{
     width: 123px;
@@ -174,6 +204,11 @@
 }
 .action-qty_change{
     cursor: pointer;
+    padding: 4px 0px;
+    border-radius: 5px;
+}
+.action-qty_change:hover{
+    background: #F3F3F3;
 }
 .action-qty_input{
     width: 20%;
@@ -225,6 +260,12 @@
     font-size: 18px;
     line-height: 24px;
     color: #470D04;
+}
+.descr-text:hover p{
+    color: #00A439;
+}
+.descr-text:hover img{
+    filter: brightness(0) saturate(100%) invert(38%) sepia(37%) saturate(5553%) hue-rotate(125deg) brightness(97%) contrast(101%);
 }
 .descr-text>span{
     position: relative;
@@ -301,17 +342,6 @@
     line-height: 24px;
     color: #470D04;
 }
-.fadeHeight-enter-active,
-.fadeHeight-leave-active {
-  transition: all 0.2s;
-  max-height: 100%;
-}
-.fadeHeight-enter,
-.fadeHeight-leave-to
-{
-  opacity: 0;
-  max-height: 0px;
-}
 .item .most-content{
     margin-bottom: 140px;
 }
@@ -387,6 +417,9 @@
         width: auto;
         margin-bottom: 0;
     }
+    .item-tasty{
+        width: 100%;
+    }
 }
 @media (max-width: 700px) {
     .item-img_main{
@@ -453,6 +486,6 @@
 }
 @media (max-width: 340px) {
     .item-img_main{
-        max-height: 300px;
+        max-height: 312px;
     }
 }

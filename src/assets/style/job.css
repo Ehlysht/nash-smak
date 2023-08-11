@@ -1,0 +1,107 @@
+.job{
+    padding: 40px 0 213px;
+}
+.job-content{
+    width: 1100px;
+    margin: 72px auto 0;
+    display: flex;
+    flex-wrap: wrap;
+}
+.job-content .vacancy-callback_form{
+    width: 74%;
+    padding: 56px 0px 50px 0px;
+}
+.job-top{
+    width: 77%;
+}
+.job-title{
+    font-size: 40px;
+    color: #470D04;
+    font-weight: 500;
+    line-height: 32px;
+    text-transform: uppercase;
+    margin-bottom: 24px;
+}
+.job-city{
+    display: flex;
+}
+.job-city_text{
+    font-size: 18px;
+    margin-left: 5px;
+    color: #470D04;
+}
+.job-btn{
+    width: 23%;
+}
+.job-btn a{
+    font-family: 'Rubik', sans-serif;
+    font-size: 18px;
+    font-weight: 500;
+    text-transform: inherit;
+    padding: 11px 40px;
+}
+.job-descr{
+    margin-top: 56px;
+    width: 900px;
+}
+.job-descr h2{
+    font-size: 18px;
+    font-weight: 500;
+    color: #470D04;
+    margin-bottom: 16px;
+}
+.job-descr *{
+    font-size: 18px;
+    color: #470D04;
+    line-height: 26px;
+}
+.job-descr li{
+    list-style: disc;
+    margin: 8px 0 8px 24px;
+}
+.job-descr ul li::marker {
+    font-size: 0.8em;
+}
+@media (max-width: 1100px) {
+    .job-content{
+        max-width: 900px;
+        width: 100%;
+    }
+    .job-top{
+        width: 70%;
+    }
+    .job-btn{
+        width: 30%;
+    }
+    .job-content .vacancy-callback_form {
+        width: 90%;
+    }
+}
+@media (max-width: 820px) {
+    .job-top{
+        width: 65%;
+    }
+    .job-title {
+        font-size: 32px;
+    }
+    .job-btn {
+        width: 35%;
+    }
+}
+@media (max-width: 480px) {
+    .job-top{
+        width: 100%;
+        margin-bottom: 24px;
+    }
+    .job-btn{
+        width: 55%;
+    }
+    .job-content .vacancy-callback_form {
+        width: 100%;
+    }
+}
+@media (max-width: 400px) {
+    .job-btn {
+        width: 80%;
+    }
+}

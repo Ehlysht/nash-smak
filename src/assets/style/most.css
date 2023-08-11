@@ -1,8 +1,11 @@
 .most{
-    padding: 80px 0;
+    padding: 80px 0 140px;
 }
 .most-content{
     position: relative;
+}
+.most-slides .carousel__track{
+    margin-left: 0px !important;
 }
 .most-title{
     font-weight: 600;
@@ -96,11 +99,12 @@
     justify-content: center;
     align-items: center;
     bottom: 0;
-    background: #FFFEFC;
+    background: rgb(254 254 254 / 80%);
     cursor: pointer;
+    backdrop-filter: blur(2px);
 }
 .most-arrow_right{
-    right: -125px;
+    right: -45px;
 }
 .most-arrow_left>img{
     transform: rotate(180deg);
@@ -202,7 +206,10 @@
         font-size: 16px; 
     }
 }
-@media (max-width: 360px) {
+@media (max-width: 420px) {
+    .most{
+        padding: 64px 0;
+    }
     .most-item{
         max-width: 100%;
         margin-right: 0px;

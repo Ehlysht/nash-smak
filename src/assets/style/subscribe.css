@@ -27,6 +27,13 @@
 .subscribe-form{
     display: flex;
     justify-content: end;
+    flex-wrap: wrap;
+}
+.subscribe-form p{
+    width: 100%;
+    color: #00A439;
+    margin-top: 8px;
+    text-align: center;
 }
 .subscribe-label{
     position: relative;
@@ -44,6 +51,9 @@
     border: 2px solid #470D04;
     border-radius: 40px;
 }
+.subscribe-input:focus{
+    border: 2px solid #00A439;
+}
 .subscribe-input::placeholder{
     font-weight: 400;
     font-size: 15px;
@@ -56,6 +66,9 @@
     right: 32px;
     cursor: pointer;
     display: flex;
+}
+.subscribe-btn img:hover{
+    filter: brightness(0) saturate(100%) invert(27%) sepia(99%) saturate(2270%) hue-rotate(133deg) brightness(103%) contrast(101%);
 }
 @media (max-width: 1366px) {
     .subscribe-content{
@@ -94,6 +107,9 @@
     }
 }
 @media (max-width: 590px) {
+    .subscribe-content{
+        margin-left: 0;
+    }
     .subscribe-title {
         font-size: 24px;
     }

@@ -10,14 +10,18 @@
     padding: 24px 24px 16px 24px;
     background: #FFEFDB;
     border-radius: 15px;
-    height: 100%;
+    height: auto;
 }
 .cabinet-info{
     width: 74%;
     padding-left: 120px;
 }
 .cabinet-item>.router-link-active{
-    background: #00A439;
+    background: #049637;
+    color: #fff;
+}
+.cabinet-item>.router-link-active img{
+    filter: brightness(0) saturate(100%) invert(100%) sepia(100%) saturate(0%) hue-rotate(12deg) brightness(106%) contrast(103%);
 }
 .cabinet-link{
     color: #2D2D2D;
@@ -31,7 +35,11 @@
     transition: all 0.5s ease;
 }
 .cabinet-link:hover{
-    background: #7FCD92;
+    background: #00A439;
+    color: #fff;
+}
+.cabinet-link:hover img{
+    filter: brightness(0) saturate(100%) invert(100%) sepia(100%) saturate(0%) hue-rotate(12deg) brightness(106%) contrast(103%);
 }
 .cabinet-link img{
     margin: 0 24px 0 16px;
@@ -121,8 +129,15 @@
     line-height: 26px;
     color: #470D04;
     cursor: pointer;
-    border-radius: 15px;
     margin-bottom: 10px;
+    padding: 4px 0 4px 16px;
+}
+.cabinet-list li:hover{
+    background: #00A439;
+    color: #fff;
+}
+.cabinet-list li:hover p{
+    color: #fff;
 }
 
 /* width */
@@ -158,6 +173,7 @@
 .cabinet-radio label {
     width: 100%;
     padding-left: 40px;
+    cursor: pointer;
 }
 
 .cabinet-radio label:before {
@@ -172,13 +188,23 @@
     border-radius: 50%;
     background: #E9E9E9;
 }
-
+.cabinet-radio label:hover:after{
+    border-radius: 11px;
+    width: 11px;
+    height: 11px;
+    position: absolute;
+    top: 32px;
+    left: 7px;
+    content: " ";
+    display: block;
+    background: #00A439;
+}
 .cabinet-radio input[type=radio]:checked + label:after {
     border-radius: 11px;
-    width: 12px;
-    height: 12px;
+    width: 11px;
+    height: 11px;
     position: absolute;
-    top: 31px;
+    top: 32px;
     left: 7px;
     content: " ";
     display: block;
@@ -207,6 +233,14 @@
     color: #00A439;
     cursor: pointer;
     margin-top: 8px;
+    background: linear-gradient(to left, transparent 50%, #00A439 50%) right;
+    background-size: 201%;
+    transition: .5s ease-out;
+}
+.cabint-btn:hover{
+    background-position: left;
+    color: #fff;
+    border-color: #00A439;
 }
 .cabinet-subscribe_title{
     font-weight: 500;
@@ -233,11 +267,74 @@
     padding: 14px 0;
     color: #470D04;
     cursor: pointer;
+    background: linear-gradient(to left, transparent 50%, #470D04 50%) right;
+    background-size: 201%;
+    transition: .5s ease-out;
+}
+.cabinet-subscribe_btn:hover{
+    background-position: left;
+    border-color: #470D04;
+}
+.cabinet-subscribe_btn:hover p{
+    color: #fff;
 }
 .cabinet-subscribe_btn>p{
     font-weight: 500;
     font-size: 18px;
     line-height: 24px;
+    transition: all 0.5s ease;
+}
+.access-popApp{
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0,0,0,.4);
+    z-index: 1;
+    display: flex;
+    justify-content: center;
+}
+.access-popApp_block{
+    background: #FFFEFC;
+    width: 390px;
+    height: 180px;
+    margin-top: 150px;
+    padding: 40px 48px;
+    border-radius: 15px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+.access-popApp_btns{
+    display: flex;
+    justify-content: space-between;
+}
+.access-popApp_yes, .access-popApp_no{
+    margin: 0;
+}
+.access-popApp_yes a, .access-popApp_no a{
+    font-size: 18px;
+    line-height: 24px;
+    color: #A6A4A2;
+    font-family: 'Rubik', sans-serif;
+    border: 1.5px solid #A6A4A2;
+    padding: 8px 24px;
+    border-radius: 15px;
+    text-transform: inherit;
+}
+.access-popApp_no{
+    margin-right: 90px;
+}
+.access-popApp_no a{
+    background: linear-gradient(to left, transparent 50%, #ff5757 50%) right;
+    background-size: 201%;
+    transition: .5s ease-out;
+}
+.access-popApp_no a:hover{
+    background-position: left;
+    color: #fff;
+    border-color: #ff5757;
 }
 @media (max-width: 1366px) {
     .cabinet{
@@ -245,6 +342,10 @@
     }
     .cabinet-info{
         padding-left: 85px;
+    }
+    .cabinet-label, .cabinet-input{
+        white-space: nowrap;
+        overflow: hidden;
     }
 }
 @media (max-width: 1150px) {
@@ -294,6 +395,8 @@
     }
     .cabinet-label, .cabinet-input, .cabint-btn{
         font-size: 16px;
+        white-space: nowrap;
+        overflow: hidden;
     }
     .cabinet-subscribe_title{
         font-size: 22px;
@@ -363,6 +466,10 @@
     }
     .cabinet-subscribe{
         width: 80%;
+        margin-top: 32px;
+    }
+    .cabinet-remember{
+        margin-top: 32px;
     }
 }
 @media (max-width: 360px) {

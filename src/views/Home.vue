@@ -5,16 +5,16 @@
         <carusel/>
       </div>
     </section>
-    <section class="catalog" id="catalog">
+    <section data-aos="fade-right" data-aos-once="true" data-aos-offset="200" class="catalog" id="catalog">
       <catalog/>
     </section>
-    <section class="most" id="most">
-      <most :visibBtn="true"/>
+    <section data-aos="fade-right" data-aos-once="true" data-aos-offset="200" class="most" id="most">
+      <most/>
     </section>
     <about/>
     <adv/>
     <subscribe/>
-    <section class="target" id="target">
+    <section data-aos="fade-right" data-aos-once="true" data-aos-offset="200" class="target" id="target">
       <div class="container">
         <img src="@/assets/img/target-logo.png" alt="Logo" class="target-logo">
         <h2 class="target-title">
@@ -26,7 +26,7 @@
         <img src="@/assets/img/target-img.png" alt="Image" class="target-img">
       </div>
     </section>
-    <insta/>
+    <insta data-aos="fade-right" data-aos-once="true" data-aos-offset="200"/>
   </div>
 </template>
 <script>
@@ -55,6 +55,7 @@ export default {
   mounted(){
     this.screenWidth = screen.width
     this.$store.dispatch('setLoader', false);
+    this.$store.dispatch('setVisibleMenu', false);
   }
 }
 </script>

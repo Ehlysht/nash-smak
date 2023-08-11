@@ -64,6 +64,9 @@
     background: #FFFEFC;
     margin-top: 10px;
 }
+.contacts-error{
+    border: 1px solid #E84E24;
+}
 .contacts-input_text{
     cursor: pointer;
     display: flex;
@@ -81,12 +84,19 @@
 }
 .contacts-comments .ql-toolbar.ql-snow + .ql-container.ql-snow{
     border-top: 1px solid #EDEDED;
+    transition: all 0.5s ease;
+}
+.contacts-error-textarea .ql-toolbar.ql-snow + .ql-container.ql-snow{
+    border-top: 1px solid #E84E24;
 }
 .contacts-textarea{
     background: #FFFEFC;
     border: 1px solid #EDEDED !important;
     border-radius: 15px;
     height: 180px;
+}
+.contacts-error-textarea .contacts-textarea{
+    border: 1px solid #E84E24 !important;
 }
 .contacts-alert{
     font-weight: 400;
@@ -129,8 +139,23 @@
     text-transform: uppercase;
     color: #470D04;
 }
+.contacts-social_links{
+    display: flex;
+}
 .contacts-social_links>a{
     margin-right: 24px;
+}
+.contacts-social_links a:after{
+    content: '';
+    display: block;
+    width: 24px;
+    height: 2px;
+    background: #470d04;
+    margin: 0 auto;
+    opacity: 0;
+}
+.contacts-social_links a:hover::after{
+    opacity: 1;
 }
 @media (max-width: 1367px) {
     .contacts-callback{

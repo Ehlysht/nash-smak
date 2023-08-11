@@ -107,6 +107,7 @@ export default {
     },
     mounted(){
         this.$store.dispatch('setLoader', false);
+        this.$store.dispatch('setVisibleMenu', false);
     }
 }
 </script>
@@ -139,5 +140,12 @@ export default {
         width: 100%;
         font-size: 12px;
         color: red;
+    }
+    @media (max-width: 1000px) {
+        .cabinet-form{
+            margin: 60px auto;
+            width: 90%;
+
+        }
     }
 </style>

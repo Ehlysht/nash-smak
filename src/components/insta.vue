@@ -7,7 +7,7 @@
       <Carousel :breakpoints="breakpoints" :items-to-show="4" class="insta-carusel" :rtl="false">
         <Slide class="insta-slide" v-for="slide in this.instaArray" :key="slide.id">
           <a :href="slide.link" target="_blank">
-            <img :src="`https://nash.enott.com.ua/api/upload/${slide.img}`" alt="Instagram Image">
+            <div class="insta-carusel_img" :style="`background: url('https://nash.enott.com.ua/api/upload/${slide.img}')center center/cover no-repeat`"></div>
           </a>
         </Slide>
       </Carousel>
@@ -16,6 +16,7 @@
 </template>
 
 <script>
+import axios from 'axios'
 import { defineComponent } from 'vue'
 import { Carousel, Slide } from 'vue3-carousel'
 
@@ -29,12 +30,7 @@ export default defineComponent({
   data(){
     return{
       screenWidth: '',
-      instaArray: [
-        {'id': 1, 'link': 'https://www.instagram.com/nashsmak.ua/?hl=en', 'img': 'insta1.jpg'},
-        {'id': 2, 'link': 'https://www.instagram.com/nashsmak.ua/?hl=en', 'img': 'insta2.jpg'},
-        {'id': 3, 'link': 'https://www.instagram.com/nashsmak.ua/?hl=en', 'img': 'insta3.jpg'},
-        {'id': 4, 'link': 'https://www.instagram.com/nashsmak.ua/?hl=en', 'img': 'insta4.jpg'},
-      ],
+      instaArray: [],
       // breakpoints are mobile first
       // any settings not specified will fallback to the carousel settings
       breakpoints: {
@@ -57,6 +53,10 @@ export default defineComponent({
   },
   mounted(){
     this.screenWidth = screen.width
+    axios.get('https://nash.enott.com.ua/api/getInsta')
+    .then(response => {
+        this.instaArray = response.data;
+    })
   }
 })
 </script>
