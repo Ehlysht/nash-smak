@@ -1,0 +1,1 @@
+import{_ as s}from"./index-8544e283.js";const t={mounted(){this.$store.dispatch("setLoader",!1),this.$store.dispatch("setCartVisible",!1),this.$store.dispatch("setVisibleMenu",!1)}};function e(r,a,o,i,c,n){return null}const _=s(t,[["render",e]]);export{_ as default};
