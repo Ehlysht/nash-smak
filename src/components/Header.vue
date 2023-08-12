@@ -57,7 +57,7 @@
                             Про нас
                         </h3>
                         <li class="sublist-item">
-                            <router-link class="sublist-item_link sublist-about_link" to="/btb">
+                            <router-link class="sublist-item_link sublist-about_link" to="/About">
                                 <h4>
                                     Наша історія
                                 </h4>

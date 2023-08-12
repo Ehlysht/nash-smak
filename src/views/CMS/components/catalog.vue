@@ -145,7 +145,8 @@
                     <input id="cat" type="text" v-model="this.catDescr">
                 </label>
                 <div v-if="this.catId == catImg.id" class="file-drop-area" style="width: 41%;padding:10px;">
-                    <span class="fake-btn">Завантажити нове фото</span>
+                    <span v-if="!this.catImg.name" class="fake-btn">Завантажити нове фото</span>
+                    <span v-if="this.catImg.name" class="file-msg" v-html="this.catImg.name"></span>
                     <input class="file adminPage-item_changeImg file-input" type="file" ref="file" @change="changeCatImg($event)" >
                 </div>
                 <div v-if="this.catId == catImg.id" class="category-item_head__img" :style="`background:url('${this.catLink}')center center/cover no-repeat;height:449px;margin-top:32px;`"></div>
@@ -154,13 +155,17 @@
         <Transition name="fade">
             <div class="access-popApp" v-if="this.popAppAccept">
                 <div class="access-popApp_block">
-                    <p class="access-popApp_text">
+                    <p class="access-popApp_text" v-if="this.popAppAccept != 'Done'">
                         Ви дійсно хочете зберегти зміни?
+                    </p>
+                    <p class="access-popApp_text" v-if="this.popAppAccept == 'Done'">
+                        Готово
                     </p>
                     <div class="access-popApp_btns">
                         <button class="access-popApp_yes btn" v-if="popAppAccept == 'updateCatalog'" @click.prevent="updateCatalog()"><a href="#">Так</a></button>
                         <button class="access-popApp_yes btn" v-if="popAppAccept == 'changeCat'" @click.prevent="changeCat(catImg.image, catImg.name)"><a href="#">Так</a></button>
-                        <button class="access-popApp_no btn" @click.prevent="this.popAppAccept = false"><a href="#">Ні</a></button>
+                        <button class="access-popApp_no btn" v-if="this.popAppAccept != 'Done'" @click.prevent="this.popAppAccept = false; this.modal1 = ''; this.modal2 = ''"><a href="#">Ні</a></button>
+                        <button class="access-popApp_yes btn" v-if="this.popAppAccept == 'Done'"  @click.prevent="reloadPage()"><a href="#">Ok</a></button>
                     </div>
                 </div>
             </div>
@@ -196,7 +201,13 @@ export default {
             box6: '',
             file: '',
             imageUrl: '',
-            popAppAccept: ''
+            popAppAccept: '',
+            catImgList: [],
+            catId: '',
+            catTitle: '',
+            catDescr: '',
+            catImg: '',
+            catLink: ''
         }
     },
     methods:{
@@ -248,16 +259,19 @@ export default {
             }
             axios.post('https://nash.enott.com.ua/api/changeCatImg', formData, config
             ).then(function(){
-                alert("Змінено")
-                location.reload(true)
             })
             .catch(function(){
                 alert("Перевірьте чи правильно заповнили всі поля");
             });
+            this.popAppAccept = 'Done'
         },
         onChangeFileUpload2(e){
             this.file = e.target.files[0]
             this.imageUrl = URL.createObjectURL(this.file);
+        },
+        changeCatImg(e){
+            this.catImg = e.target.files[0]
+            this.catLink = URL.createObjectURL(this.catImg);
         },
         updateCatalog(){
             let formData = new FormData();
@@ -299,12 +313,35 @@ export default {
             }
             axios.post('https://nash.enott.com.ua/api/updateCatItem', formData, config
             ).then(function(){
-                alert("Змінено")
-                location.reload(true)
             })
             .catch(function(){
                 alert("Перевірьте чи правильно заповнили всі поля");
             });
+            this.popAppAccept = 'Done'
+        },
+        changeCat(oldImg, oldName){
+            let formData = new FormData();
+            formData.append('title', this.catTitle);
+            formData.append('descr', this.catDescr);
+            formData.append('oldName', oldName);
+            formData.append('newPhoto', this.catImg);
+            formData.append('id', this.catId);
+            formData.append('deleteImg', oldImg);
+            let config = {
+                headers: {
+                    'Content-Type': 'multipart/form-data'
+                }
+            }
+            axios.post('https://nash.enott.com.ua/api/changeCatImg', formData, config
+            ).then(function(){
+            })
+            .catch(function(){
+                alert("Перевірьте чи правильно заповнили всі поля");
+            });
+            this.popAppAccept = 'Done'
+        },
+        reloadPage(){
+            location.reload(true)
         },
     },
     watch: {
@@ -329,6 +366,10 @@ export default {
         axios.get('https://nash.enott.com.ua/api/getAllCatalog')
         .then(response => {
             this.allCatalog = response.data.allGoods
+        })
+        axios.get('https://nash.enott.com.ua/api/catalogNames')
+        .then(response => {
+            this.catImgList = response.data.infoList;
         })
     }
 }

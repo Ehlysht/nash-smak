@@ -51,7 +51,7 @@ export default {
             this.faqList = response.data;
             this.$store.dispatch('setLoader', false);
             this.$store.dispatch('setVisibleMenu', false);
-                this.$store.dispatch('setOverlay', false);
+            this.$store.dispatch('setOverlay', false);
         })
     }
 }

@@ -1,5 +1,5 @@
 <template>
-  <section v-if="showAdv == 'yes'" class="advertising" id="advertising">
+  <section v-if="this.showAdv == 'yes'" class="advertising" id="advertising">
       <div :class="`${this.screenWidth <= 360 ? 'container-fluid' : 'container'}`">
         <div class="advertising-cont" v-for="adv in advArray" :key="adv.id" :style="`background: url('https://nash.enott.com.ua/api/upload/${adv.bgImg}')left bottom/cover no-repeat, ${adv.bgColor};`">
           <div class="advertising-info">

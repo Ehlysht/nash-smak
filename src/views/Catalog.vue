@@ -63,7 +63,7 @@
                 </p>
             </div>
             <ul class="category-items">
-                <li class="category-item1" @click.prevent="openPopApp(item.bar, 'card')" :id="item.bar" v-for="item in this.catalogList.filter((item) => item.category === category.subCatalog)" :key="item.id">
+                <li class="category-item1" @click.prevent="openPopApp(item.bar, 'card')" :id="item.bar" v-for="item in this.catalogList.filter((item) => item.category.toLowerCase() === category.subCatalog.toLowerCase())" :key="item.id">
                     <div class="category-img" v-if="this.imgList">
                         <div class="category-img_head" :style="`background:url('https://nash.enott.com.ua/api/upload/${item.img}')center center/100% no-repeat;`"></div>
                         <div class="category-img_list">
@@ -97,7 +97,7 @@
                     </p>
                     <div class="popApp-headImg" :style="`background:url('https://nash.enott.com.ua/api/upload/${item.img}')center center/100% no-repeat;`"></div>
                     <div class="popApp-subImg">
-                        <div @click.prevent="openPopApp(image.bar)" :data-test="image.bar" v-for="image in this.popAppImages" :key="image.id" :style="`background:url('https://nash.enott.com.ua/api/upload/${image.image}')center center/cover no-repeat;`" :alt="image.image" :class="`${item.img == image.image ? 'popApp-subImg_img__active' : ''}`" class="popApp-subImg_img"></div>
+                        <div v-for="image in this.popAppImages" :key="image.id" :style="`background:url('https://nash.enott.com.ua/api/upload/${image.image}')center center/cover no-repeat;`" :alt="image.image" :class="`${item.img == image.image ? 'popApp-subImg_img__active' : ''}`" class="popApp-subImg_img"></div>
                     </div>
                 </div>
                 <div class="popApp-descr">
@@ -244,6 +244,7 @@ export default {
         axios.get('https://nash.enott.com.ua/api/catalogNames')
         .then(response => {
             this.catalogList = response.data.itemList;
+            console.log(response.data.itemList)
             this.imgList = response.data.imgList;
             this.sectionList = response.data.infoList;
             this.$store.dispatch('setLoader', false);

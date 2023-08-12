@@ -74,6 +74,14 @@
     line-height: 12px;
     color: #fff;
 }
+.footer-wallets{
+    margin-top: 18px;
+    display: flex;
+    align-items: center;
+}
+.footer-wallets img{
+    margin-right: 16px;
+}
 @media (max-width: 1366px) {
     .footer-logo{
         width: 27%;

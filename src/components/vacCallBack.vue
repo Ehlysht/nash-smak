@@ -23,25 +23,25 @@
             <label class="vacancy-callback_formLabel">
                 <p>Ваше резюме (doc, pdf, txt) <span>*</span></p>
                 <div class="file-drop-area">
-                    <span class="fake-btn">Завантажити файл</span>
-                    <span class="file-msg" v-html="this.file1.name"></span>
-                    <input class="file-input" accept=".pdf, .txt, .doc, .docx" type="file" ref="file1" required>
+                    <span v-if="!this.file1.name" class="fake-btn">Завантажити файл</span>
+                    <span v-if="this.file1.name" class="file-msg" v-html="this.file1.name"></span>
+                    <input class="file-input" accept=".pdf, .txt, .doc, .docx" type="file" ref="file1" @change="changeFile1($event)" required>
                 </div>
             </label>
             <label class="vacancy-callback_formLabel">
                 <p>Мотиваційний лист (doc, pdf, txt)</p>
                 <div class="file-drop-area">
-                    <span class="fake-btn">Завантажити файл</span>
-                    <span class="file-msg" v-html="this.file2.name"></span>
-                    <input class="file-input" accept=".pdf, .txt, .doc, .docx" type="file" ref="file2">
+                    <span v-if="!this.file2.name" class="fake-btn">Завантажити файл</span>
+                    <span v-if="this.file2.name" class="file-msg" v-html="this.file2.name"></span>
+                    <input class="file-input" accept=".pdf, .txt, .doc, .docx" type="file" ref="file2" @change="changeFile2($event)">
                 </div>
             </label>
             <label class="vacancy-callback_formLabel">
                 <p>Рекомендації (doc, pdf, txt)</p>
                 <div class="file-drop-area">
-                    <span class="fake-btn">Завантажити файл</span>
-                    <span class="file-msg" v-html="this.file2.name"></span>
-                    <input class="file-input" accept=".pdf, .txt, .doc, .docx" type="file" ref="file3">
+                    <span v-if="!this.file3.name" class="fake-btn">Завантажити файл</span>
+                    <span v-if="this.file3.name" class="file-msg" v-html="this.file2.name"></span>
+                    <input class="file-input" accept=".pdf, .txt, .doc, .docx" type="file" ref="file3" @change="changeFile3($event)">
                 </div>
             </label>
         </div>
@@ -77,6 +77,15 @@ export default {
         }
     },
     methods:{
+        changeFile1(e){
+            this.file1 = e.target.files[0]
+        },
+        changeFile2(e){
+            this.file2 = e.target.files[0]
+        },
+        changeFile3(e){
+            this.file3 = e.target.files[0]
+        },
         sendMail(){
             let config = {
                 headers: {

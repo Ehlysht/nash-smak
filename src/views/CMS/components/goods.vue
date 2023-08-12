@@ -8,8 +8,8 @@
             Оновити весь товар
         </p>
         <div class="file-drop-area">
-            <span class="fake-btn">Завантажити файл</span>
-            <span class="file-msg" v-html="this.file.name"></span>
+            <span v-if="!this.file.name" class="fake-btn">Завантажити файл</span>
+            <span v-if="this.file.name" class="file-msg" v-html="this.file.name"></span>
             <input class="file-input" type="file" ref="file" @change="onChangeFileUpload()">
         </div>
         <button class="adminPage-btn" @click.prevent="this.popAppAccept = 'updateGoods'">Оновити</button>
@@ -32,6 +32,9 @@
                 <div class="goods-img">
                     <div :style="`background:url('https://nash.enott.com.ua/api/upload/${item.imgItem}')center center/100% no-repeat;width:100%;height:100%`"></div>
                 </div>
+                <p>
+                    {{ item.subCategory }}
+                </p>
                 <h3 class="goods-name">
                     {{ item.name }}
                 </h3>
@@ -51,7 +54,8 @@
                 <div v-if="this.imageUrl" class="adminPage-item_mainImage" :style="`background:url('${this.imageUrl}')center center/100% no-repeat`"></div>
                 <div v-if="!this.imageUrl" class="adminPage-item_mainImage" :style="`background:url('https://nash.enott.com.ua/api/upload/${this.mainImage}')center center/100% no-repeat`"></div>
                 <div class="file-drop-area" style="width: 90%;">
-                    <span class="fake-btn">Завантажити нове фото</span>
+                    <span v-if="!this.file.name" class="fake-btn">Завантажити нове фото</span>
+                    <span v-if="this.file.name" class="file-msg" v-html="this.file.name"></span>
                     <input class="file-input" type="file" ref="file" @change="onChangeFileUpload2($event)">
                 </div>
                 <button class="adminPage-btn" v-if="this.visibleItem" @click.prevent="this.popAppAccept = 'updateItem'">
@@ -72,7 +76,7 @@
                     <div class="adminPage-mainSelect">
                         <p @click="openLists('cat')" class="adminPage-mainSelect_visibleText">
                             {{ this.itemCategory }}
-                            <svg :style="`${this.openList == 'cat' ? 'transform: rotate(0deg);' : 'transform: rotate(180deg);'}`" xmlns="http://www.w3.org/2000/svg" width="12" height="8" viewBox="0 0 12 8" fill="none" >
+                            <svg :style="`${this.openList == 'cat' ? 'transform: rotate(0deg);' : 'transform: rotate(180deg);'} margin-left: auto;`" xmlns="http://www.w3.org/2000/svg" width="12" height="8" viewBox="0 0 12 8" fill="none" >
                                 <path d="M1 6.5L5.11616 1.90683C5.60227 1.36439 6.39773 1.36439 6.88384 1.90683L11 6.5" stroke="#00A439" stroke-width="2" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round"/>
                             </svg>
                         </p>
@@ -103,7 +107,7 @@
                     <div class="adminPage-mainSelect">
                         <p @click="openLists('subCat')" class="adminPage-mainSelect_visibleText">
                             {{ this.itemSubCategory }}
-                            <svg :style="`${this.openList == 'subCat' ? 'transform: rotate(0deg);' : 'transform: rotate(180deg);'}`" xmlns="http://www.w3.org/2000/svg" width="12" height="8" viewBox="0 0 12 8" fill="none" >
+                            <svg :style="`${this.openList == 'subCat' ? 'transform: rotate(0deg);' : 'transform: rotate(180deg);'} margin-left: auto;`" xmlns="http://www.w3.org/2000/svg" width="12" height="8" viewBox="0 0 12 8" fill="none" >
                                 <path d="M1 6.5L5.11616 1.90683C5.60227 1.36439 6.39773 1.36439 6.88384 1.90683L11 6.5" stroke="#00A439" stroke-width="2" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round"/>
                             </svg>
                         </p>
@@ -167,7 +171,7 @@
                     <div class="adminPage-mainSelect">
                         <p @click="this.openLists('box')" class="adminPage-mainSelect_visibleText">
                             {{ this.itemPacking }}
-                            <svg :style="`${this.openList == 'box' ? 'transform: rotate(0deg);' : 'transform: rotate(180deg);'}`" xmlns="http://www.w3.org/2000/svg" width="12" height="8" viewBox="0 0 12 8" fill="none" >
+                            <svg :style="`${this.openList == 'box' ? 'transform: rotate(0deg);' : 'transform: rotate(180deg);'} margin-left: auto;`" xmlns="http://www.w3.org/2000/svg" width="12" height="8" viewBox="0 0 12 8" fill="none" >
                                 <path d="M1 6.5L5.11616 1.90683C5.60227 1.36439 6.39773 1.36439 6.88384 1.90683L11 6.5" stroke="#00A439" stroke-width="2" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round"/>
                             </svg>
                         </p>
@@ -351,8 +355,11 @@
     <Transition name="fade">
         <div class="access-popApp" v-if="this.popAppAccept">
             <div class="access-popApp_block">
-                <p class="access-popApp_text">
+                <p class="access-popApp_text" v-if="this.popAppAccept != 'Done'">
                     Ви дійсно хочете зберегти зміни?
+                </p>
+                <p class="access-popApp_text" v-if="this.popAppAccept == 'Done'">
+                    Готово
                 </p>
                 <div class="access-popApp_btns">
                     <button class="access-popApp_yes btn" v-if="this.popAppAccept == 'updateGoods'" @click.prevent="updateGoods()"><a href="#">Так</a></button>
@@ -360,7 +367,8 @@
                     <button class="access-popApp_yes btn" v-if="this.popAppAccept == 'uploadImg'" @click.prevent="uploadImg()"><a href="#">Так</a></button>
                     <button class="access-popApp_yes btn" v-if="this.popAppAccept == 'deleteImg'" @click.prevent="deleteImg(this.modal1, this.modal2)"><a href="#">Так</a></button>
                     <button class="access-popApp_yes btn" v-if="this.popAppAccept == 'changeTasty'" @click.prevent="changeTasty(this.modal1, this.modal2)"><a href="#">Так</a></button>
-                    <button class="access-popApp_no btn" @click.prevent="this.popAppAccept = false; this.modal1 = ''; this.modal2 = ''"><a href="#">Ні</a></button>
+                        <button class="access-popApp_no btn" v-if="this.popAppAccept != 'Done'" @click.prevent="this.popAppAccept = false; this.modal1 = ''; this.modal2 = ''"><a href="#">Ні</a></button>
+                        <button class="access-popApp_yes btn" v-if="this.popAppAccept == 'Done'"  @click.prevent="reloadPage()"><a href="#">Ok</a></button>
                 </div>
             </div>
         </div>
@@ -457,6 +465,9 @@ export default {
         }
     },
     methods:{
+        reloadPage(){
+            location.reload(true)
+        },
         onChangeFileUpload(){
             this.file = this.$refs.file.files[0];
         },
@@ -474,8 +485,7 @@ export default {
             }
             axios.post('https://nash.enott.com.ua/api/updateGoods', formData, config
             ).then(function(){
-                alert("Змінено")
-                location.reload(true)
+                this.popAppAccept = 'Done'
             })
             .catch(function(){
                 alert("Перевірьте чи правильно заповнили всі поля");
@@ -598,12 +608,12 @@ export default {
             }
             axios.post('https://nash.enott.com.ua/api/updateItem', formData, config
             ).then(function(response){
-                alert("Змінено")
-                location.reload(true)
+
             })
             .catch(function(){
                 alert("Перевірьте чи правильно заповнили всі поля");
             });
+            this.popAppAccept = 'Done'
         },
     
         getPhotos(name){
@@ -659,7 +669,7 @@ export default {
                 this.progress = this.progress + loadStep
             }
             this.showProcessLine = false
-            alert("Done")
+            this.popAppAccept = 'Done'
         },
         deleteImg(id, name){
             let formData = new FormData();
@@ -672,7 +682,7 @@ export default {
             formData.append('fileName', name);
             axios.post('https://nash.enott.com.ua/api/deletePhoto', formData, config)
             .then(response => {
-
+                this.popAppAccept = 'Done'
             })
             .catch(function(){
                 alert("Перевірьте чи правильно заповнили всі поля");
@@ -700,8 +710,7 @@ export default {
             }
             axios.post('https://nash.enott.com.ua/api/changeTasty', formData, config
             ).then(function(){
-                alert("Змінено")
-                location.reload(true)
+                this.popAppAccept = 'Done'
             })
             .catch(function(){
                 alert("Перевірьте чи правильно заповнили всі поля");

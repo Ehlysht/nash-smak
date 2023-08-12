@@ -7,7 +7,7 @@
                 <div class="item-img_scroll">
                     <div class="item-img_main">
                         <img v-if="screenWidth <= 768" :src="`https://nash.enott.com.ua/api/upload/${this.itemImage}`" :alt="this.itemImage" class="img_main">
-                        <div v-if="screenWidth > 768" :style="`background: url('https://nash.enott.com.ua/api/upload/${this.itemImage}')left top/100% no-repeat;`" class="img_main"></div>
+                        <div v-if="screenWidth > 768" :style="`background: url('https://nash.enott.com.ua/api/upload/${this.itemImage}')center center/contain no-repeat;`" class="img_main"></div>
                     </div>
                     <div class="item-img_array">
                         <div @click.prevent="changeImage(img.img)" v-for="img in this.imageArrays" :key="img.img" :class="`${this.itemImage == img.img ? 'img_array_active' : ''}`" :style="`background: url('https://nash.enott.com.ua/api/upload/${img.img}')left top/cover no-repeat;`"></div>
@@ -30,7 +30,7 @@
                     Смак:
                 </p>
                 <ul class="item-tasty" v-for="route in this.goodsList" :key="route.bar">
-                    <li v-for="item in tasty" :key="item.bar" :class="`${item.tastyName == route.subCategory ? 'tasty-active' : ''}`">
+                    <li v-for="item in tasty" :key="item.bar" :class="`${item.tastyName == route.subCategory ? 'tasty-active' : ''}`" :title="item.tastyName">
                         <router-link class="tasty-link" :to="`/Goods/${route.category}/${item.bar}`" v-if="item.exist">
                             <img :src="`https://nash.enott.com.ua/api/upload/${item.img}`" alt="" class="tasty-img">
                         </router-link>

@@ -11,7 +11,7 @@
               Тому що ми любимо свою справу, ретельно відбираємо інгредієнти і піклуємося, щоб вам смакувало! Тому що ми любимо свою справу, ретельно відбираємо інгредієнти і піклуємося, щоб вам смакувало!
             </p>
             <button class="btn about-btn">
-              <router-link to="/">
+              <router-link to="/About">
                 Більше про нас <img src="@/assets/img/arrow-right.svg" alt="Arrow">
               </router-link>
             </button>

@@ -44,6 +44,7 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
+    height: 60px;
 }
 .adminPage-mainSelect .adminPage-hiddenList{
     padding: 16px 8px;
@@ -90,6 +91,7 @@
     padding: 16px 0 0px 0;
 }
 .adminPage-form .contacts-textarea{
+    min-height: 102px;
     height: auto;
 }
 .adminPage-info{
@@ -322,6 +324,9 @@
     box-shadow: 0px 4px 15px 0px rgba(255, 249, 242, 0.15);
     background: #FFF7ED;
     border-radius: 25px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 .photosList-item img{
     width: 100%;

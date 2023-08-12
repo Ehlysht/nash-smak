@@ -3,7 +3,7 @@
         <h2 class="adminPage-title">
             Замовлення
         </h2>
-        <ul class="adminPage-order_list">
+        <ul class="adminPage-order_list" v-if="this.orderList">
             <li class="adminPage-order_header adminPage-order_item">
                 <div class="adminPage-order_click">
                     <p class="adminPage-order_index">
@@ -118,6 +118,9 @@
                 </ul>
             </li>
         </ul>
+        <p style="font-size: 18px;margin-top: 32px;">
+            Замолення відсутні
+        </p>
     </form>
 </template>
 
@@ -176,13 +179,15 @@ export default {
         .then(response => {
             this.orderList = response.data.orders
             this.uniqOrderList = response.data.uniq
-            for(let i = 0; i < this.uniqOrderList.length; i++){
-                if(this.uniqOrderList[i].status == 'Очікує оплати'){
-                    this.uniqOrderList[i].statusColor = "adminPage-order_status__yellow";
-                }else if(this.uniqOrderList[i].status == 'Відправлено'){
-                    this.uniqOrderList[i].statusColor = "adminPage-order_status__green";
-                }else{
-                    this.uniqOrderList[i].statusColor = ""
+            if(this.uniqOrderList){
+                for(let i = 0; i < this.uniqOrderList.length; i++){
+                    if(this.uniqOrderList[i].status == 'Очікує оплати'){
+                        this.uniqOrderList[i].statusColor = "adminPage-order_status__yellow";
+                    }else if(this.uniqOrderList[i].status == 'Відправлено'){
+                        this.uniqOrderList[i].statusColor = "adminPage-order_status__green";
+                    }else{
+                        this.uniqOrderList[i].statusColor = ""
+                    }
                 }
             }
             this.$store.dispatch('setLoader', false);

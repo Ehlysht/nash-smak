@@ -77,13 +77,13 @@
                                 <label>
                                     Колір
                                 </label>
-                                <input type="color" class="adv-admin_color" v-model="this.advDescrColor">
+                                <input type="color" class="adv-admin_color" v-model="this.advBgColor">
                             </div>
                             <label style="margin: 0 48px 32px 48px;color:#A6A4A2;">
                                 або
                             </label>
-                            <label for="adv1" class="adminPage-select" style="width:72%;">
-                                Фото
+                            <label for="adv1" class="adminPage-select" style="width:72%;position: relative;">
+                                Фото <p style="position: absolute;right: 0;cursor:pointer;" @click.prevent="this.advBgfile = ''; this.advBgImg = ''">Видалити фонове фото</p>
                                 <div class="file-drop-area" style="width: 100%;">
                                     <span class="fake-btn">Завантажити файл</span>
                                     <input class="file-input" type="file" ref="file" @change="advBg($event)">
@@ -305,10 +305,10 @@
         </div>
         <section class="advertising" id="advertising" v-if="this.$route.params.choice == 'advertising'">
             <div :class="`${this.screenWidth <= 360 ? 'container-fluid' : 'container'}`">
-                <div class="advertising-cont" :style="`background: url('${this.advBgfile ? this.advBgImg : this.siteLink + this.advBgImg}')left bottom/cover no-repeat, ${this.advBgColor};`">
+                <div class="advertising-cont" :style="`background: url('${this.advBgfile ? this.advBgImg : this.siteLink + this.advBgImg}')left bottom/cover no-repeat;background-color: ${this.advBgColor};`">
                     <div class="advertising-info">
                         <h2 class="advertising-title" :style="`color: ${this.advTextColor}`">
-                        {{ this.advTitle }}
+                            {{ this.advTitle }}
                         </h2>
                         <p class="advertising-text" :style="`color: ${this.advDescrColor}`" v-html="this.advDescr"></p>
                         <button class="btn advertising-btn">
@@ -324,8 +324,11 @@
         <Transition name="fade">
             <div class="access-popApp" v-if="this.popAppAccept">
                 <div class="access-popApp_block">
-                    <p class="access-popApp_text">
+                    <p class="access-popApp_text" v-if="this.popAppAccept != 'Done'">
                         Ви дійсно хочете зберегти зміни?
+                    </p>
+                    <p class="access-popApp_text" v-if="this.popAppAccept == 'Done'">
+                        Готово
                     </p>
                     <div class="access-popApp_btns">
                         <button class="access-popApp_yes btn" v-if="this.popAppAccept == 'updateAdv'"  @click.prevent="updateAdv(this.advId)"><a href="#">Так</a></button>
@@ -339,7 +342,8 @@
                         <button class="access-popApp_yes btn" v-if="this.popAppAccept == 'deleteVac'" @click.prevent="deleteVac(this.modal1)"><a href="#">Так</a></button>
                         <button class="access-popApp_yes btn" v-if="this.popAppAccept == 'deleteBanner'"  @click.prevent="deleteBanner(this.modal1, this.modal2)"><a href="#">Так</a></button>
                         
-                        <button class="access-popApp_no btn" @click.prevent="this.popAppAccept = false; this.modal1 = ''; this.modal2 = ''"><a href="#">Ні</a></button>
+                        <button class="access-popApp_no btn" v-if="this.popAppAccept != 'Done'" @click.prevent="this.popAppAccept = false; this.modal1 = ''; this.modal2 = ''"><a href="#">Ні</a></button>
+                        <button class="access-popApp_yes btn" v-if="this.popAppAccept == 'Done'"  @click.prevent="reloadPage()"><a href="#">Ok</a></button>
                     </div>
                 </div>
             </div>
@@ -510,6 +514,9 @@ export default {
             this.catImg = e.target.files[0]
             this.catLink = URL.createObjectURL(this.catImg);
         },
+        reloadPage(){
+            location.reload(true)
+        },
         addBanner(){
             let formData = new FormData();
             formData.append('file', this.$refs.file.files[0]);
@@ -520,7 +527,6 @@ export default {
             }
             axios.post('https://nash.enott.com.ua/api/addBanner', formData, config
             ).then(function(res){
-                alert("Додано")
                 location.reload(true)
             })
             
@@ -821,6 +827,7 @@ export default {
                 axios.get('https://nash.enott.com.ua/api/getBanners')
                 .then(response => {
                     this.bannersList = response.data;
+                    this.popAppAccept = 'Done'
                 })
             })
             .catch(function(){
@@ -837,7 +844,11 @@ export default {
             formData.append('bgColor', this.advBgColor);
             formData.append('btnText', this.advBtnText);
             formData.append('linkTo', this.advLinkTo);
-            formData.append('advShow', this.advShow);
+            if(this.advShow){
+                formData.append('advShow', "yes");
+            }else{
+                formData.append('advShow', "no");
+            }
             if(this.advBgfile){
                 formData.append('bgImg', this.advBgfile);
             }else{
@@ -855,12 +866,12 @@ export default {
             }
             axios.post('https://nash.enott.com.ua/api/updateAdv', formData, config
             ).then(function(){
-                alert("Змінено")
-                location.reload(true)
+
             })
             .catch(function(){
                 alert("Перевірьте чи правильно заповнили всі поля");
             });
+            this.popAppAccept = 'Done'
         },
         addFaq(id, val){
             let formData = new FormData();
@@ -875,21 +886,19 @@ export default {
             if(val == 'add'){
                 axios.post('https://nash.enott.com.ua/api/addFaq', formData, config
                 ).then(function(){
-                    alert("Додано")
-                    location.reload(true)
                 })
                 .catch(function(){
                     alert("Перевірьте чи правильно заповнили всі поля");
                 });
+                this.popAppAccept = 'Done'
             }else{
                 axios.post('https://nash.enott.com.ua/api/changeFaq', formData, config
                 ).then(function(){
-                    alert("Змінено")
-                    location.reload(true)
                 })
                 .catch(function(){
                     alert("Перевірьте чи правильно заповнили всі поля");
                 });
+                this.popAppAccept = 'Done'
             }
             
         },
@@ -913,8 +922,7 @@ export default {
             formData.append('id', id);
             axios.post('https://nash.enott.com.ua/api/deleteFaq', formData, config
             ).then(function(){
-                alert("Видалено")
-                location.reload(true)
+                this.popAppAccept = 'Done'
             })
             .catch(function(){
                 alert("Перевірьте чи правильно заповнили всі поля");
@@ -939,12 +947,11 @@ export default {
                 formData.append('id', id);
                 axios.post('https://nash.enott.com.ua/api/changeInsta', formData, config
                 ).then(function(){
-                    alert("Змінено")
-                    location.reload(true)
                 })
                 .catch(function(){
                     alert("Перевірьте чи правильно заповнили всі поля");
                 });
+                this.popAppAccept = 'Done'
             }
         },
         sendMail(){
@@ -959,7 +966,7 @@ export default {
             }
             axios.post('https://nash.enott.com.ua/api/sendAdv', formData, config
             ).then(function(){
-                alert("Відправлено")
+                this.popAppAccept = 'Done'
             })
             .catch(function(){
                 alert("Перевірьте чи правильно заповнили всі поля");
@@ -979,21 +986,19 @@ export default {
             if(val == 'add'){
                 axios.post('https://nash.enott.com.ua/api/addVac', formData, config
                 ).then(function(){
-                    alert("Додано")
-                    location.reload(true)
                 })
                 .catch(function(){
                     alert("Перевірьте чи правильно заповнили всі поля");
                 });
+                this.popAppAccept = 'Done'
             }else{
                 axios.post('https://nash.enott.com.ua/api/changeVac', formData, config
                 ).then(function(){
-                    alert("Змінено")
-                    location.reload(true)
                 })
                 .catch(function(){
                     alert("Перевірьте чи правильно заповнили всі поля");
                 });
+                this.popAppAccept = 'Done'
             }
             
         },
@@ -1018,8 +1023,7 @@ export default {
             formData.append('id', id);
             axios.post('https://nash.enott.com.ua/api/deleteVac', formData, config
             ).then(function(){
-                alert("Видалено")
-                location.reload(true)
+                this.popAppAccept = 'Done'
             })
             .catch(function(){
                 alert("Перевірьте чи правильно заповнили всі поля");
@@ -1062,8 +1066,7 @@ export default {
             }
             axios.post('https://nash.enott.com.ua/api/changeCatImg', formData, config
             ).then(function(){
-                alert("Змінено")
-                location.reload(true)
+                this.popAppAccept = 'Done'
             })
             .catch(function(){
                 alert("Перевірьте чи правильно заповнили всі поля");
@@ -1107,7 +1110,11 @@ export default {
             this.advLinkTo = response.data.adv[0].linkTo
             this.advBtnText = response.data.adv[0].btnText
             this.advHeadImg = response.data.adv[0].headImg
-            this.advShow = response.data.adv[0].advShow
+            if(response.data.adv[0].advShow == 'yes'){
+                this.advShow = true
+            }else{
+                this.advShow = false
+            }
         })
         axios.get('https://nash.enott.com.ua/api/getFaq')
         .then(response => {

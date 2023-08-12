@@ -52,17 +52,17 @@
         </ul>
         <ul class="footer-list">
           <li class="footer-item">
-            <router-link to="">
+            <router-link to="/Catalog/Каталог">
               Каталог
             </router-link>
           </li>
           <li class="footer-item">
-            <router-link to="">
+            <router-link to="/About">
               Про нас
             </router-link>
           </li>
           <li class="footer-item">
-            <router-link to="">
+            <router-link to="/vacancy">
               Вакансії
             </router-link>
           </li>
@@ -77,12 +77,12 @@
             </router-link>
           </li>
           <li class="footer-item">
-            <router-link to="">
+            <router-link to="/btb">
               B2B
             </router-link>
           </li>
           <li class="footer-item">
-            <router-link to="">
+            <router-link to="/btb">
               Умови користування
             </router-link>
           </li>
@@ -126,6 +126,10 @@
               <a href="https://www.pinterest.com/nashsmakua/" target="_blank">
                 <img src="@/assets/img/pinterest-footer.png" alt="Pinterest">
               </a>
+            </div>
+            <div class="footer-wallets">
+              <img src="@/assets/img/visa.png" alt="Visa">
+              <img src="@/assets/img/master.png" alt="Master Cart">
             </div>
           </li>
         </ul>

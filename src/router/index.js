@@ -62,6 +62,14 @@ const routes = [
       },
     },
     {
+      path: "/about",
+      name: "About",
+      component: () => import(/* webpackChunkName: "Goods" */ '../views/About.vue'),
+      meta: {
+        title: 'Наша історія',
+      },
+    },
+    {
       path: "/vacancy/:id/:name",
       name: "Job",
       component: () => import(/* webpackChunkName: "Goods" */ '../views/job.vue'),
@@ -161,6 +169,11 @@ const router = createRouter({
 router.beforeEach((to, from, next) => {
   to.meta.title = to.params.category;
   to.meta.title2 = to.params.catalogName;
+  if(to.meta.title){
+    document.title = 'Наш Смак | ' + to.meta.title;
+  }else{
+    document.title = 'Наш Смак';
+  }
   next();
 });
 // router.beforeEach((to, from) => {
